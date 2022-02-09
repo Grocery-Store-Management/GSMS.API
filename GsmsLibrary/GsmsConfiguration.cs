@@ -26,7 +26,7 @@ namespace GsmsLibrary
         /// Connection string for Database 
         /// </summary>
         public static string ConnectionString
-            => GetConfiguration()["ConnectionString:GsmsDb"];
+            => GetConfiguration()["ConnectionStrings:GsmsDb"];
 
         #endregion
     }
