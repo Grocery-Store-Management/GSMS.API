@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace GsmsApi.Controllers
 {
+    //PhongNT
     [Route("api/[controller]")]
     [ApiController]
     public class BrandController : ControllerBase
