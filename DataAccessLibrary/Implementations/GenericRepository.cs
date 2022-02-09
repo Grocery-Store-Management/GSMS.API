@@ -9,12 +9,12 @@ using DataAccessLibrary.Interfaces;
 
 namespace DataAccessLibrary.Implementations
 {
-    public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly GsmsContext context;
         protected readonly DbSet<T> dbSet;
 
-        protected GenericRepository(GsmsContext context)
+        public GenericRepository(GsmsContext context)
         {
             this.context = context;
             this.dbSet = context.Set<T>();

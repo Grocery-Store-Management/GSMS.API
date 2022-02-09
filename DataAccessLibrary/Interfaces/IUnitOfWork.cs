@@ -11,15 +11,15 @@ namespace DataAccessLibrary.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         #region Repositories
-        GenericRepository<Brand> Brands { get; }
-        GenericRepository<Category> Categories { get; }
-        GenericRepository<ImportOrderDetail> ImportOrderDetails { get; }
-        GenericRepository<ImportOrder> ImportOrders { get; }
-        GenericRepository<ProductDetail> ProductDetails { get; }
-        GenericRepository<Product> Products { get; }
-        GenericRepository<ReceiptDetail> ReceiptDetails { get; }
-        GenericRepository<Receipt> Receipts { get; }
-        GenericRepository<Store> Stores { get; }
+        IGenericRepository<Brand> Brands { get; }
+        IGenericRepository<Category> Categories { get; }
+        IGenericRepository<ImportOrderDetail> ImportOrderDetails { get; }
+        IGenericRepository<ImportOrder> ImportOrders { get; }
+        IGenericRepository<ProductDetail> ProductDetails { get; }
+        IGenericRepository<Product> Products { get; }
+        IGenericRepository<ReceiptDetail> ReceiptDetails { get; }
+        IGenericRepository<Receipt> Receipts { get; }
+        IGenericRepository<Store> Stores { get; }
         #endregion
 
         /// <summary>
