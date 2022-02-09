@@ -36,5 +36,30 @@ namespace DataAccessLibrary.BusinessEntity
         {
             return await work.Brands.GetAsync(id);
         }
+
+        public async Task<Brand> UpdateBrandAsync(Brand updatedBrand)
+        {
+            Brand brand = await work.Brands.GetAsync(updatedBrand.Id);
+            if (brand == null)
+            {
+                throw new Exception("Brand is not existed!!");
+            }
+            brand.Name = updatedBrand.Name;
+            brand.IsDeleted = updatedBrand.IsDeleted;
+            work.Brands.Update(brand);
+            work.Save();
+            return updatedBrand;
+        }
+
+        public async Task DeleteBrandAsync(string id)
+        {
+            Brand brand = await work.Brands.GetAsync(id);
+            if (brand == null)
+            {
+                throw new Exception("Brand is not existed!!");
+            }
+            work.Brands.Delete(brand);
+            work.Save();
+        }
     }
 }
