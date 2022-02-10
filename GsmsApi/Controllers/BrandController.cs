@@ -123,6 +123,11 @@ namespace GsmsApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a brand
+        /// </summary>
+        /// <param name="id">ID of the brand to be deleted</param>
+        /// <returns></returns>
         // DELETE api/<BrandController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(500)]

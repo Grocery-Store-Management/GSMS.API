@@ -37,6 +37,11 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<Store> AddStoreAsync(Store newStore)
         {
+            Brand brand = await work.Brands.GetAsync(newStore.BrandId);
+            if (brand == null)
+            {
+                throw new Exception("Brand is not existed!!");
+            }
             newStore.Id = GsmsUtils.CreateGuiId();
             newStore.CreatedDate = DateTime.Now;
             newStore.IsDeleted = false;
@@ -51,6 +56,11 @@ namespace DataAccessLibrary.BusinessEntity
             if (store == null)
             {
                 throw new Exception("Store is not existed!!");
+            }
+            Brand brand = await work.Brands.GetAsync(updatedStore.BrandId);
+            if (brand == null)
+            {
+                throw new Exception("Brand is not existed!!");
             }
             store.Name = updatedStore.Name;
             store.IsDeleted = updatedStore.IsDeleted;
