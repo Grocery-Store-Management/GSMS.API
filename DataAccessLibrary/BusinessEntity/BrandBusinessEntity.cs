@@ -32,7 +32,7 @@ namespace DataAccessLibrary.BusinessEntity
             return await work.Brands.GetAllAsync();
         }
 
-        public async Task<Brand> GetAsync(string id)
+        public async Task<Brand> GetBrandAsync(string id)
         {
             return await work.Brands.GetAsync(id);
         }
@@ -48,7 +48,7 @@ namespace DataAccessLibrary.BusinessEntity
             brand.IsDeleted = updatedBrand.IsDeleted;
             work.Brands.Update(brand);
             work.Save();
-            return updatedBrand;
+            return brand;
         }
 
         public async Task DeleteBrandAsync(string id)

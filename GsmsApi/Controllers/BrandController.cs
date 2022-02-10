@@ -57,7 +57,7 @@ namespace GsmsApi.Controllers
         {
             try
             {
-                Brand brand = await brandEntity.GetAsync(id);
+                Brand brand = await brandEntity.GetBrandAsync(id);
                 if (brand == null)
                 {
                     return StatusCode(204);
