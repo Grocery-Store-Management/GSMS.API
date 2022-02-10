@@ -17,7 +17,7 @@ namespace BusinessObjectLibrary
         public string Name { get; set; }
         public string BrandId { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public int? IsDeleted { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual Brand Brand { get; set; }
         public virtual ICollection<ImportOrder> ImportOrders { get; set; }
