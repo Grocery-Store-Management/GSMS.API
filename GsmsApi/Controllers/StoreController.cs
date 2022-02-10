@@ -31,7 +31,7 @@ namespace GsmsApi.Controllers
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Store>), 200)]
-        public async Task<IActionResult> GetAsync([FromQuery] string? brandId)
+        public async Task<IActionResult> GetsAsync([FromQuery] string? brandId)
         {
             IEnumerable<Store> stores;
             try
@@ -62,7 +62,7 @@ namespace GsmsApi.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(Store), 200)]
-        public async Task<IActionResult> GetsAsync(string id)
+        public async Task<IActionResult> GetAsync(string id)
         {
             try
             {
