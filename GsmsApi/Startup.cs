@@ -35,6 +35,14 @@ namespace GsmsApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GsmsApi", Version = "v1" });
             });
+
+            // API Calling Settings
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                c.AddPolicy("AllowHeader", options => options.AllowAnyHeader());
+                c.AddPolicy("AllowMethod", options => options.AllowAnyMethod());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
