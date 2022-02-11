@@ -60,17 +60,12 @@ namespace GsmsApi.Controllers
         /// <returns>The existed store</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(Store), 200)]
         public async Task<IActionResult> GetAsync(string id)
         {
             try
             {
                 Store store = await storeEntity.GetStoreAsync(id);
-                if (store == null)
-                {
-                    return StatusCode(204);
-                }
                 return StatusCode(200, store);
             }
             catch (Exception ex)
@@ -118,7 +113,7 @@ namespace GsmsApi.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(Store), 201)]
-        public async Task<IActionResult> Put(string id, [FromBody] Store updatedStore)
+        public async Task<IActionResult> PutAsync(string id, [FromBody] Store updatedStore)
         {
             try
             {
@@ -142,13 +137,13 @@ namespace GsmsApi.Controllers
         // DELETE api/<StoreController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(204)]
-        public async Task<IActionResult> Delete(string id)
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> DeleteAsync(string id)
         {
             try
             {
                 await storeEntity.DeleteStoreAsync(id);
-                return StatusCode(204);
+                return StatusCode(200);
             } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);

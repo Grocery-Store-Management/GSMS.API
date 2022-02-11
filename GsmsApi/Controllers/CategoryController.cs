@@ -50,17 +50,12 @@ namespace GsmsApi.Controllers
         // GET api/<CategoryController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(Category), 200)]
         public async Task<IActionResult> GetAsync(string id)
         {
             try
             {
                 Category category = await categoryEntity.GetCategoryAsync(id);
-                if (category == null)
-                {
-                    return StatusCode(204);
-                }
                 return StatusCode(200, category);
             } catch (Exception ex)
             {
@@ -77,7 +72,7 @@ namespace GsmsApi.Controllers
         [HttpPost]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(Category), 201)]
-        public async Task<IActionResult> Post([FromBody] Category newCategory)
+        public async Task<IActionResult> PostAsync([FromBody] Category newCategory)
         {
             try
             {
@@ -103,7 +98,7 @@ namespace GsmsApi.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(Category), 201)]
-        public async Task<IActionResult> Put(string id, [FromBody] Category updatedCategory)
+        public async Task<IActionResult> PutAsync(string id, [FromBody] Category updatedCategory)
         {
             try
             {
@@ -122,13 +117,13 @@ namespace GsmsApi.Controllers
         // DELETE api/<CategoryController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(204)]
-        public async Task<IActionResult> Delete(string id)
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> DeleteAsync(string id)
         {
             try
             {
                 await categoryEntity.DeleteCategoryAsync(id);
-                return StatusCode(204);
+                return StatusCode(200);
             } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);

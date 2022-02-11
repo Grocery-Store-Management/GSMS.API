@@ -117,11 +117,11 @@ namespace BusinessObjectLibrary
 
                 entity.Property(e => e.CategoryId).HasMaxLength(40);
 
-                entity.Property(e => e.MasterProductId)
-                    .IsRequired()
-                    .HasMaxLength(40);
+                entity.Property(e => e.MasterProductId).HasMaxLength(40);
 
-                entity.Property(e => e.Name).HasMaxLength(50);
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
@@ -131,7 +131,6 @@ namespace BusinessObjectLibrary
                 entity.HasOne(d => d.MasterProduct)
                     .WithMany(p => p.InverseMasterProduct)
                     .HasForeignKey(d => d.MasterProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MasterProduct_Product");
             });
 

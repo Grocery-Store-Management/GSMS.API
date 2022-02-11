@@ -18,30 +18,35 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<IEnumerable<Store>> GetStoresAsync()
         {
-            return await work.Stores.GetAllAsync();
+            IEnumerable<Store> stores = await work.Stores.GetAllAsync();
+            stores = from store in stores
+                     where store.IsDeleted == false
+                     select store;
+            return stores;
         }
 
         public async Task<Store> GetStoreAsync(string id)
         {
-            return await work.Stores.GetAsync(id);
+            Store store = await work.Stores.GetAsync(id);
+            if (store != null && store.IsDeleted == true)
+            {
+                return null;
+            }
+            return store;
         }
 
         public async Task<IEnumerable<Store>> GetStoresAsync(string brandId)
         {
             IEnumerable<Store> stores = await work.Stores.GetAllAsync();
             stores = from store in stores
-                     where store.BrandId.Equals(brandId)
+                     where store.BrandId.Equals(brandId) && store.IsDeleted == false
                      select store;
             return stores;
         }
 
         public async Task<Store> AddStoreAsync(Store newStore)
         {
-            Brand brand = await work.Brands.GetAsync(newStore.BrandId);
-            if (brand == null)
-            {
-                throw new Exception("Brand is not existed!!");
-            }
+            await CheckStore(newStore);
             newStore.Id = GsmsUtils.CreateGuiId();
             newStore.CreatedDate = DateTime.Now;
             newStore.IsDeleted = false;
@@ -53,15 +58,11 @@ namespace DataAccessLibrary.BusinessEntity
         public async Task<Store> UpdateStoreAsync(Store updatedStore)
         {
             Store store = await work.Stores.GetAsync(updatedStore.Id);
-            if (store == null)
+            if (store == null || store.IsDeleted == true)
             {
                 throw new Exception("Store is not existed!!");
             }
-            Brand brand = await work.Brands.GetAsync(updatedStore.BrandId);
-            if (brand == null)
-            {
-                throw new Exception("Brand is not existed!!");
-            }
+            await CheckStore(updatedStore);
             store.Name = updatedStore.Name;
             store.IsDeleted = updatedStore.IsDeleted;
             store.BrandId = updatedStore.BrandId;
@@ -70,6 +71,14 @@ namespace DataAccessLibrary.BusinessEntity
             return store;
         }
 
+        private async Task CheckStore(Store store)
+        {
+            Brand brand = await work.Brands.GetAsync(store.BrandId);
+            if (brand == null)
+            {
+                throw new Exception("Brand is not existed!!");
+            }
+        }
         public async Task DeleteStoreAsync(string id)
         {
             Store store = await work.Stores.GetAsync(id);
@@ -77,7 +86,9 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 throw new Exception("Store is not existed!!");
             }
-            work.Stores.Delete(store);
+            //work.Stores.Delete(store);
+            store.IsDeleted = true;
+            work.Stores.Update(store);
             work.Save();
         }
     }

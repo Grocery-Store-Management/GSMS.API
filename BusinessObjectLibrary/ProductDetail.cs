@@ -10,7 +10,7 @@ namespace BusinessObjectLibrary
         public string Id { get; set; }
         public string ProductId { get; set; }
         public decimal? Price { get; set; }
-        public string Status { get; set; }
+        public Status Status { get; set; }
         public int? StoredQuantity { get; set; }
         public DateTime? CreatedDate { get; set; }
 
