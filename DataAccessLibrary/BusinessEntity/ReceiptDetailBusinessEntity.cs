@@ -49,7 +49,7 @@ namespace DataAccessLibrary.BusinessEntity
             IEnumerable<ReceiptDetail> receiptDetails;
 
             Receipt receipt = await work.Receipts.GetAsync(receiptId);
-            if (receipt == null)
+            if (receipt == null || receipt.IsDeleted == true)
             {
                 throw new Exception("Receipt is not existed!!");
             }
@@ -61,7 +61,7 @@ namespace DataAccessLibrary.BusinessEntity
         public async Task<ReceiptDetail> UpdateReceiptDetailAsync(ReceiptDetail updatedReceiptDetail)
         {
             Receipt receipt = await work.Receipts.GetAsync(updatedReceiptDetail.ReceiptId);
-            if (receipt == null)
+            if (receipt == null || receipt.IsDeleted == true)
             {
                 throw new Exception("Receipt is not existed!!");
             }
@@ -103,7 +103,7 @@ namespace DataAccessLibrary.BusinessEntity
         public async Task DeleteReceiptDetailsByReceiptIdAsync(string receiptId)
         {
             Receipt receipt = await work.Receipts.GetAsync(receiptId);
-            if (receipt == null)
+            if (receipt == null || receipt.IsDeleted == true)
             {
                 throw new Exception("Receipt is not existed!!");
             }

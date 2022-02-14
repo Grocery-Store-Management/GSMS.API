@@ -33,12 +33,19 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<IEnumerable<Receipt>> GetReceiptsAsync()
         {
-            return await work.Receipts.GetAllAsync();
+            IEnumerable<Receipt> receipts = await work.Receipts.GetAllAsync();
+            receipts = receipts.Where(r => r.IsDeleted == false);
+            return receipts;
         }
 
         public async Task<Receipt> GetAsync(string id)
         {
-            return await work.Receipts.GetAsync(id);
+            Receipt receipt = await work.Receipts.GetAsync(id);
+            if (receipt != null && receipt.IsDeleted == true)
+            {
+                return null;
+            }
+            return receipt;
         }
 
         public async Task<Receipt> UpdateReceiptAsync(Receipt updatedReceipt)
@@ -50,7 +57,7 @@ namespace DataAccessLibrary.BusinessEntity
             }
 
             Receipt receipt = await work.Receipts.GetAsync(updatedReceipt.Id);
-            if (receipt == null)
+            if (receipt == null || receipt.IsDeleted == true)
             {
                 throw new Exception("Receipt is not existed!!");
             }
@@ -82,7 +89,9 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 throw new Exception("Receipt is not existed!!");
             }
-            work.Receipts.Delete(receipt);
+            //work.Receipts.Delete(receipt);
+            receipt.IsDeleted = true;
+            work.Receipts.Update(receipt);
             work.Save();
         }
     }
