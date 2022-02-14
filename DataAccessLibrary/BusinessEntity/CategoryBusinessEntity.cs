@@ -19,12 +19,21 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
-            return await work.Categories.GetAllAsync();
+            IEnumerable<Category> categories = await work.Categories.GetAllAsync();
+            categories = from category in categories
+                         where category.IsDeleted == false
+                         select category;
+            return categories;
         }
 
         public async Task<Category> GetCategoryAsync(string id)
         {
-            return await work.Categories.GetAsync(id);
+            Category category = await work.Categories.GetAsync(id);
+            if (category != null && category.IsDeleted == true)
+            {
+                return null;
+            }
+            return category;
         }
 
         public async Task<Category> AddCategoryAsync(Category newCategory)
@@ -39,7 +48,7 @@ namespace DataAccessLibrary.BusinessEntity
         public async Task<Category> UpdateCategoryAsync(Category updatedCategory)
         {
             Category category = await work.Categories.GetAsync(updatedCategory.Id);
-            if (category == null)
+            if (category == null || category.IsDeleted == true)
             {
                 throw new Exception("Category is not existed!!");
             }
@@ -57,7 +66,9 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 throw new Exception("Category is not existed!!");
             }
-            work.Categories.Delete(category);
+            //work.Categories.Delete(category);
+            category.IsDeleted = true;
+            work.Categories.Update(category);
             work.Save();
         }
     }

@@ -52,16 +52,11 @@ namespace GsmsApi.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(Brand), 200)]
-        [ProducesResponseType(204)]
         public async Task<IActionResult> GetAsync(string id)
         {
             try
             {
                 Brand brand = await brandEntity.GetBrandAsync(id);
-                if (brand == null)
-                {
-                    return StatusCode(204);
-                }
                 return StatusCode(200, brand);
             }
             catch (Exception ex)
@@ -107,7 +102,7 @@ namespace GsmsApi.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(Brand), 201)]
-        public async Task<IActionResult> Put(string id, [FromBody] Brand updatedBrand)
+        public async Task<IActionResult> PutAsync(string id, [FromBody] Brand updatedBrand)
         {
             try
             {
@@ -131,13 +126,13 @@ namespace GsmsApi.Controllers
         // DELETE api/<BrandController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(204)]
-        public async Task<IActionResult> Delete(string id)
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> DeleteAsync(string id)
         {
             try
             {
                 await brandEntity.DeleteBrandAsync(id);
-                return StatusCode(204);
+                return StatusCode(200);
             } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
