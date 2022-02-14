@@ -32,12 +32,19 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<IEnumerable<ImportOrder>> GetImportOrdersAsync()
         {
-            return await work.ImportOrders.GetAllAsync();
+            IEnumerable<ImportOrder> importOrders = await work.ImportOrders.GetAllAsync();
+            importOrders = importOrders.Where(i => i.IsDeleted == false);
+            return importOrders;
         }
 
         public async Task<ImportOrder> GetAsync(string id)
         {
-            return await work.ImportOrders.GetAsync(id);
+            ImportOrder importOrder = await work.ImportOrders.GetAsync(id);
+            if(importOrder != null &&  importOrder.IsDeleted == true)
+            {
+                return null;
+            }
+            return importOrder;
         }
 
         public async Task<ImportOrder> UpdateImportOrderAsync(ImportOrder updatedImportOrder)
@@ -49,7 +56,7 @@ namespace DataAccessLibrary.BusinessEntity
             }
 
             ImportOrder importOrder = await work.ImportOrders.GetAsync(updatedImportOrder.Id);
-            if(importOrder == null)
+            if(importOrder == null || importOrder.IsDeleted == true)
             {
                 throw new Exception("Import order is not existed!!");
             }
@@ -81,7 +88,9 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 throw new Exception("Import order is not existed!!");
             }
-            work.ImportOrders.Delete(importOrder);
+            //work.ImportOrders.Delete(importOrder);
+            importOrder.IsDeleted = true;
+            work.ImportOrders.Update(importOrder);
             work.Save();
         }
     }

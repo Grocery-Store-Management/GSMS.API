@@ -50,7 +50,7 @@ namespace DataAccessLibrary.BusinessEntity
             IEnumerable<ImportOrderDetail> importOrderDetails;
 
             ImportOrder importOrder = await work.ImportOrders.GetAsync(importOrderId);
-            if (importOrder == null)
+            if (importOrder == null || importOrder.IsDeleted == true)
             {
                 throw new Exception("Import order is not existed!!");
             }
@@ -62,7 +62,7 @@ namespace DataAccessLibrary.BusinessEntity
         public async Task<ImportOrderDetail> UpdateImportOrderDetailAsync(ImportOrderDetail updatedImportOrderDetail)
         {
             ImportOrder importOrder = await work.ImportOrders.GetAsync(updatedImportOrderDetail.OrderId);
-            if (importOrder == null)
+            if (importOrder == null || importOrder.IsDeleted == true)
             {
                 throw new Exception("Import order is not existed!!");
             }
@@ -128,7 +128,7 @@ namespace DataAccessLibrary.BusinessEntity
         public async Task DeleteImportOrderDetailsByImportOrderIdAsync(string importOrderId)
         {
             ImportOrder importOrder = await work.ImportOrders.GetAsync(importOrderId);
-            if (importOrder == null)
+            if (importOrder == null || importOrder.IsDeleted == true)
             {
                 throw new Exception("Import order is not existed!!");
             }
