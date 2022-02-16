@@ -101,14 +101,6 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 importOrderDetail.IsDeleted = updatedImportOrderDetail.IsDeleted;
             }
-            if (updatedImportOrderDetail.ManufacturingDate != null)
-            {
-                importOrderDetail.ManufacturingDate = updatedImportOrderDetail.ManufacturingDate;
-            }
-            if (updatedImportOrderDetail.ExpiringDate != null)
-            {
-                importOrderDetail.ExpiringDate = updatedImportOrderDetail.ExpiringDate;
-            }
             work.ImportOrderDetails.Update(importOrderDetail);
             work.Save();
             return importOrderDetail;

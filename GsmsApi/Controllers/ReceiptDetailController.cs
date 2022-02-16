@@ -59,16 +59,11 @@ namespace GsmsApi.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(ReceiptDetail), 200)]
-        [ProducesResponseType(204)]
         public async Task<IActionResult> GetAsync(string id)
         {
             try
             {
                 ReceiptDetail receiptDetail = await receiptDetailEntity.GetAsync(id);
-                if (receiptDetail == null)
-                {
-                    return StatusCode(204);
-                }
                 return StatusCode(200, receiptDetail);
             }
             catch (Exception ex)
@@ -85,14 +80,14 @@ namespace GsmsApi.Controllers
         /// <param name="newReceiptDetail">New receipt detail to be added</param>
         /// <returns>The added receipt detail</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(ReceiptDetail), 201)]
+        [ProducesResponseType(typeof(ReceiptDetail), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> PostAsync([FromBody] ReceiptDetail newReceiptDetail)
         {
             try
             {
                 ReceiptDetail addedReceiptDetail = await receiptDetailEntity.AddReceiptDetailAsync(newReceiptDetail);
-                return StatusCode(201, addedReceiptDetail);
+                return StatusCode(200, addedReceiptDetail);
             }
             catch (Exception ex)
             {
@@ -109,7 +104,7 @@ namespace GsmsApi.Controllers
         /// <returns>The updated receipt detail</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(typeof(ReceiptDetail), 201)]
+        [ProducesResponseType(typeof(ReceiptDetail), 200)]
         public async Task<IActionResult> Put(string id, [FromBody] ReceiptDetail updatedReceiptDetail)
         {
             try
@@ -130,13 +125,13 @@ namespace GsmsApi.Controllers
         // DELETE api/<ReceiptDetailController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> Delete(string id)
         {
             try
             {
                 await receiptDetailEntity.DeleteReceiptDetailAsync(id);
-                return StatusCode(204);
+                return StatusCode(200);
             }
             catch (Exception ex)
             {
@@ -147,13 +142,13 @@ namespace GsmsApi.Controllers
         // DELETE api/<ReceiptDetailController>/5
         [HttpDelete]
         [ProducesResponseType(500)]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> DeleteByRecepitId([FromQuery] string receiptId)
         {
             try
             {
                 await receiptDetailEntity.DeleteReceiptDetailsByReceiptIdAsync(receiptId);
-                return StatusCode(204);
+                return StatusCode(200);
             }
             catch (Exception ex)
             {

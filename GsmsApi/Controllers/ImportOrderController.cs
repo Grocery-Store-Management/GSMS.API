@@ -28,11 +28,11 @@ namespace GsmsApi.Controllers
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<ImportOrder>), 200)]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAsync([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             try
             {
-                IEnumerable<ImportOrder> importOrders = await importOrderEntity.GetImportOrdersAsync();
+                IEnumerable<ImportOrder> importOrders = await importOrderEntity.GetImportOrdersAsync(startDate, endDate);
                 return StatusCode(200, importOrders);
             }
             catch (Exception ex)
@@ -50,16 +50,11 @@ namespace GsmsApi.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(ImportOrder), 200)]
-        [ProducesResponseType(204)]
         public async Task<IActionResult> GetAsync(string id)
         {
             try
             {
                 ImportOrder importOrder = await importOrderEntity.GetAsync(id);
-                if (importOrder == null)
-                {
-                    return StatusCode(204);
-                }
                 return StatusCode(200, importOrder);
             }
             catch (Exception ex)
@@ -76,7 +71,7 @@ namespace GsmsApi.Controllers
         /// <param name="newImportOrder">New import order to be added, NAME property of the import order must be provided</param>
         /// <returns>The added import order</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(ImportOrder), 201)]
+        [ProducesResponseType(typeof(ImportOrder), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> PostAsync([FromBody] ImportOrder newImportOrder)
         {
@@ -87,7 +82,7 @@ namespace GsmsApi.Controllers
                     throw new Exception("Import order name is empty!!");
                 }
                 ImportOrder addedImportOrder = await importOrderEntity.AddImportOrderAsync(newImportOrder);
-                return StatusCode(201, addedImportOrder);
+                return StatusCode(200, addedImportOrder);
             }
             catch (Exception ex)
             {
@@ -104,7 +99,7 @@ namespace GsmsApi.Controllers
         /// <returns>The updated import order</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(typeof(ImportOrder), 201)]
+        [ProducesResponseType(typeof(ImportOrder), 200)]
         public async Task<IActionResult> Put(string id, [FromBody] ImportOrder updatedImportOrder)
         {
             try
@@ -125,13 +120,13 @@ namespace GsmsApi.Controllers
         // DELETE api/<ImportOrderController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> Delete(string id)
         {
             try
             {
                 await importOrderEntity.DeleteImportOrderAsync(id);
-                return StatusCode(204);
+                return StatusCode(200);
             }
             catch (Exception ex)
             {
