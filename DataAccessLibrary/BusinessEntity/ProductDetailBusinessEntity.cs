@@ -57,7 +57,6 @@ namespace DataAccessLibrary.BusinessEntity
         {
             await CheckProductDetail (newProductDetail);
             newProductDetail.Id = GsmsUtils.CreateGuiId();
-            newProductDetail.CreatedDate = DateTime.Now;
             await work.ProductDetails.AddAsync(newProductDetail);
             work.Save();
             return newProductDetail;

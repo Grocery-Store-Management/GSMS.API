@@ -14,8 +14,6 @@ namespace BusinessObjectLibrary
         public string ProductId { get; set; }
         public int? Quantity { get; set; }
         public bool? IsDeleted { get; set; }
-        public DateTime? ManufacturingDate { get; set; }
-        public DateTime? ExpiringDate { get; set; }
 
         public virtual ImportOrder Order { get; set; }
         public virtual Product Product { get; set; }
