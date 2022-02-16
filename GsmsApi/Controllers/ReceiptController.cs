@@ -29,11 +29,11 @@ namespace GsmsApi.Controllers
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Receipt>), 200)]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAsync([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             try
             {
-                IEnumerable<Receipt> receipts = await receiptEntity.GetReceiptsAsync();
+                IEnumerable<Receipt> receipts = await receiptEntity.GetReceiptsAsync(startDate, endDate);
                 return StatusCode(200, receipts);
             }
             catch (Exception ex)
@@ -51,16 +51,11 @@ namespace GsmsApi.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(Receipt), 200)]
-        [ProducesResponseType(204)]
         public async Task<IActionResult> GetAsync(string id)
         {
             try
             {
                 Receipt receipt = await receiptEntity.GetAsync(id);
-                if (receipt == null)
-                {
-                    return StatusCode(204);
-                }
                 return StatusCode(200, receipt);
             }
             catch (Exception ex)
@@ -77,14 +72,14 @@ namespace GsmsApi.Controllers
         /// <param name="newReceipt">New Receipt to be added</param>
         /// <returns>The added import order</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(Receipt), 201)]
+        [ProducesResponseType(typeof(Receipt), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> PostAsync([FromBody] Receipt newReceipt)
         {
             try
             {
                 Receipt addedReceipt = await receiptEntity.AddReceiptAsync(newReceipt);
-                return StatusCode(201, addedReceipt);
+                return StatusCode(200, addedReceipt);
             }
             catch (Exception ex)
             {
@@ -101,7 +96,7 @@ namespace GsmsApi.Controllers
         /// <returns>The updated receipt</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(typeof(Receipt), 201)]
+        [ProducesResponseType(typeof(Receipt), 200)]
         public async Task<IActionResult> Put(string id, [FromBody] Receipt updatedReceipt)
         {
             try
@@ -122,13 +117,13 @@ namespace GsmsApi.Controllers
         // DELETE api/<ReceiptController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> Delete(string id)
         {
             try
             {
                 await receiptEntity.DeleteReceiptAsync(id);
-                return StatusCode(204);
+                return StatusCode(200);
             }
             catch (Exception ex)
             {

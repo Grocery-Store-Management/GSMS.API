@@ -24,16 +24,21 @@ namespace DataAccessLibrary.BusinessEntity
                 throw new Exception("Store is not existed!!");
             }
             newImportOrder.Id = GsmsUtils.CreateGuiId();
+            newImportOrder.CreatedDate = DateTime.Now;
             newImportOrder.IsDeleted = false;
             await work.ImportOrders.AddAsync(newImportOrder);
             work.Save();
             return newImportOrder;
         }
 
-        public async Task<IEnumerable<ImportOrder>> GetImportOrdersAsync()
+        public async Task<IEnumerable<ImportOrder>> GetImportOrdersAsync(DateTime? startDate, DateTime? endDate)
         {
             IEnumerable<ImportOrder> importOrders = await work.ImportOrders.GetAllAsync();
             importOrders = importOrders.Where(i => i.IsDeleted == false);
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                importOrders = importOrders.Where(i => i.CreatedDate >= startDate || i.CreatedDate <= endDate);
+            }
             return importOrders;
         }
 

@@ -31,10 +31,14 @@ namespace DataAccessLibrary.BusinessEntity
             return newReceipt;
         }
 
-        public async Task<IEnumerable<Receipt>> GetReceiptsAsync()
+        public async Task<IEnumerable<Receipt>> GetReceiptsAsync(DateTime? startDate, DateTime? endDate)
         {
             IEnumerable<Receipt> receipts = await work.Receipts.GetAllAsync();
             receipts = receipts.Where(r => r.IsDeleted == false);
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                receipts = receipts.Where(r => r.CreatedDate >= startDate || r.CreatedDate <= endDate);
+            }
             return receipts;
         }
 
