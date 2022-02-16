@@ -10,9 +10,10 @@ namespace BusinessObjectLibrary
         public string Id { get; set; }
         public string ProductId { get; set; }
         public decimal? Price { get; set; }
-        public Status Status { get; set; }
+        public Status? Status { get; set; }
         public int? StoredQuantity { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? ManufacturingDate { get; set; }
+        public DateTime? ExpiringDate { get; set; }
 
         public virtual Product Product { get; set; }
     }
