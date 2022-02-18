@@ -37,6 +37,7 @@ namespace DataAccessLibrary.BusinessEntity
                     {
                         throw new Exception("Product is not existed!!");
                     }
+                    importOrderDetail.OrderId = newImportOrder.Id;
                     await work.ImportOrderDetails.AddAsync(importOrderDetail);
                 }
             }
