@@ -52,7 +52,7 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 receipts = receipts.Where(r => r.CreatedDate >= startDate || r.CreatedDate <= endDate);
             }
-            return receipts;
+            return receipts.OrderBy(r => r.CreatedDate);
         }
 
         public async Task<Receipt> GetAsync(string id)
