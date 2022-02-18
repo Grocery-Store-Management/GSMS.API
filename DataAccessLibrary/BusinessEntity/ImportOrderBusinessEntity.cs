@@ -52,7 +52,7 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 importOrders = importOrders.Where(i => i.CreatedDate >= startDate || i.CreatedDate <= endDate);
             }
-            return importOrders;
+            return importOrders.OrderBy(i => i.Name);
         }
 
         public async Task<ImportOrder> GetAsync(string id)
