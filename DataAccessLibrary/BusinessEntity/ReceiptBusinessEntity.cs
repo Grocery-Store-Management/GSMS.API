@@ -27,6 +27,19 @@ namespace DataAccessLibrary.BusinessEntity
             newReceipt.CreatedDate = DateTime.Now;
             newReceipt.IsDeleted = false;
             await work.Receipts.AddAsync(newReceipt);
+            if (newReceipt.ReceiptDetails.Count > 0)
+            {
+                foreach (ReceiptDetail receiptDetail in newReceipt.ReceiptDetails)
+                {
+                    receiptDetail.Id = GsmsUtils.CreateGuiId();
+                    Product product = await work.Products.GetAsync(receiptDetail.ProductId);
+                    if (product == null)
+                    {
+                        throw new Exception("Product is not existed!!");
+                    }
+                    await work.ReceiptDetails.AddAsync(receiptDetail);
+                }
+            }
             work.Save();
             return newReceipt;
         }
@@ -81,6 +94,7 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 receipt.IsDeleted = updatedReceipt.IsDeleted;
             }
+            receipt.ReceiptDetails = updatedReceipt.ReceiptDetails;
             work.Receipts.Update(receipt);
             work.Save();
             return receipt;

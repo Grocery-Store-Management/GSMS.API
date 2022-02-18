@@ -27,6 +27,19 @@ namespace DataAccessLibrary.BusinessEntity
             newImportOrder.CreatedDate = DateTime.Now;
             newImportOrder.IsDeleted = false;
             await work.ImportOrders.AddAsync(newImportOrder);
+            if (newImportOrder.ImportOrderDetails.Count > 0)
+            {
+                foreach (ImportOrderDetail importOrderDetail in newImportOrder.ImportOrderDetails)
+                {
+                    importOrderDetail.Id = GsmsUtils.CreateGuiId();
+                    Product product = await work.Products.GetAsync(importOrderDetail.ProductId);
+                    if (product == null)
+                    {
+                        throw new Exception("Product is not existed!!");
+                    }
+                    await work.ImportOrderDetails.AddAsync(importOrderDetail);
+                }
+            }
             work.Save();
             return newImportOrder;
         }
@@ -81,6 +94,7 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 importOrder.IsDeleted = updatedImportOrder.IsDeleted;
             }
+            importOrder.ImportOrderDetails = updatedImportOrder.ImportOrderDetails;
             work.ImportOrders.Update(importOrder);
             work.Save();
             return importOrder;
