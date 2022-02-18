@@ -37,6 +37,7 @@ namespace DataAccessLibrary.BusinessEntity
                     {
                         throw new Exception("Product is not existed!!");
                     }
+                    receiptDetail.ReceiptId = newReceipt.Id;
                     await work.ReceiptDetails.AddAsync(receiptDetail);
                 }
             }
