@@ -101,6 +101,20 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 receipt.IsDeleted = updatedReceipt.IsDeleted;
             }
+            foreach (ReceiptDetail receiptDetail in updatedReceipt.ReceiptDetails)
+            {
+                Product product = await work.Products.GetAsync(receiptDetail.ProductId);
+                IEnumerable<ProductDetail> productDetails = await work.ProductDetails.GetAllAsync();
+                ProductDetail productDetail = productDetails.Where(p => p.ProductId == product.Id).FirstOrDefault();
+                if (product == null || product.IsDeleted == true)
+                {
+                    throw new Exception("Product is not existed!!");
+                }
+                if (receiptDetail.Quantity > productDetail.StoredQuantity)
+                {
+                    throw new Exception("Purchase quantity exceeds quantity in stock!!");
+                }
+            }
             receipt.ReceiptDetails = updatedReceipt.ReceiptDetails;
             work.Receipts.Update(receipt);
             work.Save();
