@@ -33,9 +33,15 @@ namespace DataAccessLibrary.BusinessEntity
                 {
                     receiptDetail.Id = GsmsUtils.CreateGuiId();
                     Product product = await work.Products.GetAsync(receiptDetail.ProductId);
-                    if (product == null)
+                    IEnumerable<ProductDetail> productDetails = await work.ProductDetails.GetAllAsync();
+                    ProductDetail productDetail = productDetails.Where(p => p.ProductId == product.Id).FirstOrDefault();
+                    if (product == null || product.IsDeleted == true)
                     {
                         throw new Exception("Product is not existed!!");
+                    }
+                    if(receiptDetail.Quantity > productDetail.StoredQuantity)
+                    {
+                        throw new Exception("Purchase quantity exceeds quantity in stock!!");
                     }
                     receiptDetail.ReceiptId = newReceipt.Id;
                     await work.ReceiptDetails.AddAsync(receiptDetail);

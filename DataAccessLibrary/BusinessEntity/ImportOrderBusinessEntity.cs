@@ -33,7 +33,7 @@ namespace DataAccessLibrary.BusinessEntity
                 {
                     importOrderDetail.Id = GsmsUtils.CreateGuiId();
                     Product product = await work.Products.GetAsync(importOrderDetail.ProductId);
-                    if (product == null)
+                    if (product == null || product.IsDeleted == true)
                     {
                         throw new Exception("Product is not existed!!");
                     }
