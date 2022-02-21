@@ -26,7 +26,6 @@ namespace DataAccessLibrary.BusinessEntity
             newImportOrder.Id = GsmsUtils.CreateGuiId();
             newImportOrder.CreatedDate = DateTime.Now;
             newImportOrder.IsDeleted = false;
-            await work.ImportOrders.AddAsync(newImportOrder);
             if (newImportOrder.ImportOrderDetails.Count > 0)
             {
                 foreach (ImportOrderDetail importOrderDetail in newImportOrder.ImportOrderDetails)
@@ -41,6 +40,7 @@ namespace DataAccessLibrary.BusinessEntity
                     await work.ImportOrderDetails.AddAsync(importOrderDetail);
                 }
             }
+            await work.ImportOrders.AddAsync(newImportOrder);
             work.Save();
             return newImportOrder;
         }
