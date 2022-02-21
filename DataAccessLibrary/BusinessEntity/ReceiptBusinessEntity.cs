@@ -44,6 +44,8 @@ namespace DataAccessLibrary.BusinessEntity
                     }
                     receiptDetail.ReceiptId = newReceipt.Id;
                     await work.ReceiptDetails.AddAsync(receiptDetail);
+                    productDetail.StoredQuantity -= receiptDetail.Quantity;
+                    work.ProductDetails.Update(productDetail);
                 }
             }
             await work.Receipts.AddAsync(newReceipt);
