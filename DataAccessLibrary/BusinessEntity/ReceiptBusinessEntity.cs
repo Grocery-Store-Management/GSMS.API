@@ -26,7 +26,6 @@ namespace DataAccessLibrary.BusinessEntity
             newReceipt.Id = GsmsUtils.CreateGuiId();
             newReceipt.CreatedDate = DateTime.Now;
             newReceipt.IsDeleted = false;
-            await work.Receipts.AddAsync(newReceipt);
             if (newReceipt.ReceiptDetails.Count > 0)
             {
                 foreach (ReceiptDetail receiptDetail in newReceipt.ReceiptDetails)
@@ -47,6 +46,7 @@ namespace DataAccessLibrary.BusinessEntity
                     await work.ReceiptDetails.AddAsync(receiptDetail);
                 }
             }
+            await work.Receipts.AddAsync(newReceipt);
             work.Save();
             return newReceipt;
         }
