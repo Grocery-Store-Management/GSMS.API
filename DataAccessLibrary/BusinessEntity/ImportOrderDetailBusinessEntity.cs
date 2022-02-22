@@ -18,7 +18,7 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<ImportOrderDetail> AddImportOrderDetailAsync(ImportOrderDetail newImportOrderDetail)
         {
-            ImportOrder importOrder = await work.ImportOrders.GetAsync(newImportOrderDetail.OrderId);
+            ImportOrder importOrder = await work.ImportOrders.GetAsync(newImportOrderDetail.ImportOrderId);
             if(importOrder == null)
             {
                 throw new Exception("Import order is not existed!!");
@@ -61,7 +61,7 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<ImportOrderDetail> UpdateImportOrderDetailAsync(ImportOrderDetail updatedImportOrderDetail)
         {
-            ImportOrder importOrder = await work.ImportOrders.GetAsync(updatedImportOrderDetail.OrderId);
+            ImportOrder importOrder = await work.ImportOrders.GetAsync(updatedImportOrderDetail.ImportOrderId);
             if (importOrder == null || importOrder.IsDeleted == true)
             {
                 throw new Exception("Import order is not existed!!");
@@ -77,9 +77,9 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 throw new Exception("Import order detail is not existed!!");
             }
-            if(updatedImportOrderDetail.OrderId != null)
+            if(updatedImportOrderDetail.ImportOrderId != null)
             {
-                importOrderDetail.OrderId = updatedImportOrderDetail.OrderId;
+                importOrderDetail.ImportOrderId = updatedImportOrderDetail.ImportOrderId;
             }
             if (updatedImportOrderDetail.Name != null)
             {

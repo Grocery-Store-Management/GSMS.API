@@ -43,6 +43,8 @@ namespace DataAccessLibrary.BusinessEntity
                         throw new Exception("Purchase quantity exceeds quantity in stock!!");
                     }
                     receiptDetail.ReceiptId = newReceipt.Id;
+                    receiptDetail.Name = product.Name;
+                    receiptDetail.Price = productDetail.Price;
                     await work.ReceiptDetails.AddAsync(receiptDetail);
                     productDetail.StoredQuantity -= receiptDetail.Quantity;
                     work.ProductDetails.Update(productDetail);
