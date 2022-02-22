@@ -10,7 +10,7 @@ namespace DataAccessLibrary.BusinessEntity
 {
     public class ProductBusinessEntity
     {
-        private IUnitOfWork work; 
+        private IUnitOfWork work;
         public ProductBusinessEntity(IUnitOfWork work)
         {
             this.work = work;
@@ -58,6 +58,21 @@ namespace DataAccessLibrary.BusinessEntity
             await CheckProduct(newProduct);
             newProduct.Id = GsmsUtils.CreateGuiId();
             newProduct.IsDeleted = false;
+            if (newProduct.ProductDetails.Any())
+            {
+
+                foreach (ProductDetail productDetail in newProduct.ProductDetails)
+                {
+                    if (productDetail.Price == null || productDetail.Price < 0)
+                    {
+                        throw new Exception("Product Price must be a positive decimal number!!");
+                    }
+                    if (productDetail.StoredQuantity == null || productDetail.StoredQuantity < 0)
+                    {
+                        throw new Exception("Stored Quantity must be a positive integer!!");
+                    }
+                }
+            }
             await work.Products.AddAsync(newProduct);
             work.Save();
             return newProduct;
@@ -76,6 +91,21 @@ namespace DataAccessLibrary.BusinessEntity
             product.MasterProductId = updatedProduct.MasterProductId;
             product.CategoryId = updatedProduct.CategoryId;
             product.IsDeleted = updatedProduct.IsDeleted;
+            if (updatedProduct.ProductDetails.Any())
+            {
+                foreach (ProductDetail productDetail in updatedProduct.ProductDetails)
+                {
+                    if (productDetail.Price == null || productDetail.Price < 0)
+                    {
+                        throw new Exception("Product Price must be a positive decimal number!!");
+                    }
+                    if (productDetail.StoredQuantity == null || productDetail.StoredQuantity < 0)
+                    {
+                        throw new Exception("Stored Quantity must be a positive integer!!");
+                    }
+                }
+                product.ProductDetails = updatedProduct.ProductDetails;
+            }
             work.Products.Update(product);
             work.Save();
             return product;
