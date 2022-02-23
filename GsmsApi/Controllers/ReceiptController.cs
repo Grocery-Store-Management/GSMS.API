@@ -13,7 +13,7 @@ namespace GsmsApi.Controllers
     //PhucVVT
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/[controller]")]
+    [Route("api/v{v:apiVersion}/receipts")]
     public class ReceiptController : ControllerBase
     {
         private ReceiptBusinessEntity receiptEntity;

@@ -14,7 +14,7 @@ namespace GsmsApi.Controllers
     //PhongNT
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/[controller]")]
+    [Route("api/v{v:apiVersion}/stores")]
     public class StoreController : ControllerBase
     {
         private StoreBusinessEntity storeEntity;
