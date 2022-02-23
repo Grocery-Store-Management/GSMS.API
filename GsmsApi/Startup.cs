@@ -36,6 +36,14 @@ namespace GsmsApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GsmsApi", Version = "v1" });
             });
 
+            // API Versioning
+            services.AddApiVersioning(x =>
+            {
+                x.DefaultApiVersion = new ApiVersion(1, 0);
+                x.AssumeDefaultVersionWhenUnspecified = true;
+                x.ReportApiVersions = true;
+            });
+
             // API Calling Settings
             services.AddCors(c =>
             {

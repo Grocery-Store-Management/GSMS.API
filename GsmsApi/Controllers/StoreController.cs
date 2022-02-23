@@ -12,8 +12,9 @@ using System.Threading.Tasks;
 namespace GsmsApi.Controllers
 {
     //PhongNT
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{v:apiVersion}/[controller]")]
     public class StoreController : ControllerBase
     {
         private StoreBusinessEntity storeEntity;
