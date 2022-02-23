@@ -13,7 +13,7 @@ namespace GsmsApi.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/[controller]")]
+    [Route("api/v{v:apiVersion}/product-details")]
     public class ProductDetailController : ControllerBase
     {
         private ProductDetailBusinessEntity productDetailEntity;
