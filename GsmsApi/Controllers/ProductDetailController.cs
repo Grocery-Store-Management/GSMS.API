@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace GsmsApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{v:apiVersion}/[controller]")]
     public class ProductDetailController : ControllerBase
     {
         private ProductDetailBusinessEntity productDetailEntity;
