@@ -29,6 +29,12 @@ namespace GsmsApi.Controllers
         /// </summary>
         /// <param name="productId">Product ID to filter</param>
         /// <param name="status">Status to filter. 1 for Active, -1 for Inactive</param>
+        /// <param name="sortByPrice">Sort by Price</param>
+        /// <param name="sortByStoredQuantity">Sort by Stored Quantity</param>
+        /// <param name="sortByManufacturingDate">Sort by Manufaturing Date</param>
+        /// <param name="sortByExpiringDate">Sort by Expiring Date</param>
+        /// <param name="page">Page number, 0 to get all</param>
+        /// <param name="pageSize">Page Size</param>
         /// <returns>List of products</returns>
         [HttpGet]
         [ProducesResponseType(500)]
