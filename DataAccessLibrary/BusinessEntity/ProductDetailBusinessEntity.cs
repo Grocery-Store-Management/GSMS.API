@@ -16,9 +16,33 @@ namespace DataAccessLibrary.BusinessEntity
             this.work = work;
         }
 
-        public async Task<IEnumerable<ProductDetail>> GetProductDetailsAsync()
+        public async Task<IEnumerable<ProductDetail>> GetProductDetailsAsync(
+            SortType? sortByPrice,
+            SortType? sortByStoredQuantity,
+            SortType? sortByManufacturingDate,
+            SortType? sortByExpiringDate,
+            int page,
+            int pageSize)
         {
-            return await work.ProductDetails.GetAllAsync();
+            IEnumerable<ProductDetail> productDetails = await work.ProductDetails.GetAllAsync();
+            
+            if (sortByPrice.HasValue)
+            {
+                productDetails = GsmsUtils.Sort(productDetails, d => d.Price, sortByPrice.Value);
+            } else if (sortByStoredQuantity.HasValue)
+            {
+                productDetails = GsmsUtils.Sort(productDetails, d => d.StoredQuantity, sortByStoredQuantity.Value);
+            } else if (sortByManufacturingDate.HasValue)
+            {
+                productDetails = GsmsUtils.Sort(productDetails, d => d.ManufacturingDate, sortByManufacturingDate.Value);
+            } else if (sortByExpiringDate.HasValue)
+            {
+                productDetails = GsmsUtils.Sort(productDetails, d => d.ExpiringDate, sortByExpiringDate.Value);
+            }
+
+            productDetails = GsmsUtils.Paging(productDetails, page, pageSize);
+
+            return productDetails;
         }
 
         public async Task<ProductDetail> GetProductDetailAsync(string id)

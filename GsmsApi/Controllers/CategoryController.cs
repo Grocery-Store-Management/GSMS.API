@@ -1,6 +1,7 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
+using GsmsLibrary;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -25,17 +26,23 @@ namespace GsmsApi.Controllers
 
         // GET: api/<CategoryController>
         /// <summary>
-        /// Get All the Categories
+        /// Get All Categories
         /// </summary>
+        /// <param name="sortByName">Sort By Category Name</param>
+        /// <param name="page">Page number, 0 to get all</param>
+        /// <param name="pageSize">Page Size</param>
         /// <returns>List of categories</returns>
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Category>), 200)]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAsync(
+            [FromQuery] SortType sortByName,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
             try
             {
-                IEnumerable<Category> categories = await categoryEntity.GetCategoriesAsync();
+                IEnumerable<Category> categories = await categoryEntity.GetCategoriesAsync(sortByName, page, pageSize);
                 return StatusCode(200, categories);
             } catch (Exception ex)
             {

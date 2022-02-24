@@ -27,12 +27,32 @@ namespace DataAccessLibrary.BusinessEntity
             return newBrand;
         }
 
-        public async Task<IEnumerable<Brand>> GetBrandsAsync()
+        public async Task<IEnumerable<Brand>> GetBrandsAsync(
+            SortType? sortByName,
+            SortType? sortByDate,
+            int page,
+            int pageSize
+            )
         {
             IEnumerable<Brand> brands = await work.Brands.GetAllAsync();
             brands = from brand in brands
                      where brand.IsDeleted == false
                      select brand;
+            if (sortByName.HasValue)
+            {
+                brands = GsmsUtils.Sort(brands, b => b.Name, sortByName.Value);
+            }
+            else if (sortByDate.HasValue)
+            {
+                brands = GsmsUtils.Sort(brands, b => b.CreatedDate, sortByDate.Value);
+            }
+            else if (!sortByName.HasValue && !sortByDate.HasValue)
+            {
+                brands = GsmsUtils.Sort(brands, b => b.CreatedDate, SortType.DESC);
+            }
+
+            brands = GsmsUtils.Paging(brands, page, pageSize);
+
             return brands;
         }
 
