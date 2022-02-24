@@ -1,6 +1,7 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
+using GsmsLibrary;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -29,18 +30,27 @@ namespace GsmsApi.Controllers
         /// </summary>
         /// <param name="categoryId">Category ID to filter</param>
         /// <param name="masterProductId">Master Product ID to filter</param>
+        /// <param name="sortByName">Sort by Product Name</param>
+        /// <param name="page">Page number, 0 to get all</param>
+        /// <param name="pageSize">Page Size</param>
         /// <returns>List of products</returns>
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Product>), 200)]
-        public async Task<IActionResult> GetsAsync([FromQuery] string? categoryId, [FromQuery] string? masterProductId)
+        public async Task<IActionResult> GetsAsync(
+            [FromQuery] string categoryId, 
+            [FromQuery] string masterProductId,
+            [FromQuery] SortType? sortByName,
+            int page = 1,
+            int pageSize = 10
+            )
         {
             IEnumerable<Product> products = new List<Product>();
             try
             {
                 if (string.IsNullOrEmpty(categoryId) && string.IsNullOrEmpty(masterProductId))
                 {
-                    products = await productEntity.GetProductsAsync();
+                    products = await productEntity.GetProductsAsync(sortByName, page, pageSize);
                 } else if (!string.IsNullOrEmpty(categoryId))
                 {
                     products = await productEntity.GetProductsByCategoryAsync(categoryId);

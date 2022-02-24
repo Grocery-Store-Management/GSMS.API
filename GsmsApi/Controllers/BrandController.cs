@@ -1,6 +1,7 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
+using GsmsLibrary;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -25,17 +26,26 @@ namespace GsmsApi.Controllers
 
         // GET: api/<BrandController>
         /// <summary>
-        /// Get All the brands
+        /// Get All Brands
         /// </summary>
-        /// <returns>List of brands</returns>
+        /// <param name="sortByName">Sort by Brand Name</param>
+        /// <param name="sortByDate">Sort by Brand Created Date</param>
+        /// <param name="page">Page number, 0 to get all</param>
+        /// <param name="pageSize">Page Size</param>
+        /// <returns>List of Brands</returns>
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Brand>), 200)]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAsync(
+            [FromQuery] SortType? sortByName, 
+            [FromQuery] SortType? sortByDate,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10
+            )
         {
             try
             {
-                IEnumerable<Brand> brands = await brandEntity.GetBrandsAsync();
+                IEnumerable<Brand> brands = await brandEntity.GetBrandsAsync(sortByName, sortByDate, page, pageSize);
                 return StatusCode(200, brands);
             }
             catch (Exception ex)

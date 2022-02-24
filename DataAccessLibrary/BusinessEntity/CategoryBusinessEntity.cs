@@ -17,12 +17,23 @@ namespace DataAccessLibrary.BusinessEntity
             this.work = work;
         }
 
-        public async Task<IEnumerable<Category>> GetCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetCategoriesAsync(
+            SortType? sortByName,
+            int page,
+            int pageSize)
         {
             IEnumerable<Category> categories = await work.Categories.GetAllAsync();
             categories = from category in categories
                          where category.IsDeleted == false
                          select category;
+
+            if (sortByName.HasValue)
+            {
+                categories = GsmsUtils.Sort(categories, c => c.Name, sortByName.Value);
+            }
+
+            categories = GsmsUtils.Paging(categories, page, pageSize);
+
             return categories;
         }
 

@@ -16,12 +16,24 @@ namespace DataAccessLibrary.BusinessEntity
             this.work = work;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        public async Task<IEnumerable<Product>> GetProductsAsync(
+            SortType? sortByName,
+            int page,
+            int pageSize
+            )
         {
             IEnumerable<Product> products = await work.Products.GetAllAsync();
             products = from product in products
                        where product.IsDeleted == false
                        select product;
+
+            if (sortByName.HasValue)
+            {
+                products = GsmsUtils.Sort(products, p => p.Name, sortByName.Value);
+            }
+
+            products = GsmsUtils.Paging(products, page, pageSize);
+
             return products;
         }
 

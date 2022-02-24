@@ -1,6 +1,7 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
+using GsmsLibrary;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -32,14 +33,22 @@ namespace GsmsApi.Controllers
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<ProductDetail>), 200)]
-        public async Task<IActionResult> GetsAsync([FromQuery] string? productId, [FromQuery] Status? status)
+        public async Task<IActionResult> GetsAsync(
+            [FromQuery] string? productId, 
+            [FromQuery] Status? status,
+            SortType? sortByPrice,
+            SortType? sortByStoredQuantity,
+            SortType? sortByManufacturingDate,
+            SortType? sortByExpiringDate,
+            int page = 1 ,
+            int pageSize = 10)
         {
             IEnumerable<ProductDetail> products = new List<ProductDetail>();
             try
             {
                 if (string.IsNullOrEmpty(productId) && status == null)
                 {
-                    products = await productDetailEntity.GetProductDetailsAsync();
+                    products = await productDetailEntity.GetProductDetailsAsync(sortByPrice, sortByStoredQuantity, sortByManufacturingDate, sortByExpiringDate, page, pageSize);
                 }
                 else if (!string.IsNullOrEmpty(productId))
                 {
