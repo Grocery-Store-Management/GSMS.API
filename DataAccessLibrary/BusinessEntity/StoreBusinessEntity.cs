@@ -16,12 +16,29 @@ namespace DataAccessLibrary.BusinessEntity
             this.work = work;
         }
 
-        public async Task<IEnumerable<Store>> GetStoresAsync()
+        public async Task<IEnumerable<Store>> GetStoresAsync(
+            SortType? sortByName,
+            SortType? sortByDate,
+            int page,
+            int pageSize
+            )
         {
             IEnumerable<Store> stores = await work.Stores.GetAllAsync();
             stores = from store in stores
                      where store.IsDeleted == false
                      select store;
+            if (sortByName.HasValue)
+            {
+                stores = GsmsUtils.Sort(stores, s => s.Name, sortByName.Value);
+            } else if (sortByDate.HasValue)
+            {
+                stores = GsmsUtils.Sort(stores, s => s.CreatedDate, sortByDate.Value);
+            } else if (!sortByName.HasValue && !sortByDate.HasValue)
+            {
+                stores = GsmsUtils.Sort(stores, s => s.CreatedDate, SortType.DESC);
+            }
+
+            stores = GsmsUtils.Paging(stores, page, pageSize);
             return stores;
         }
 

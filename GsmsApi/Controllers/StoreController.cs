@@ -1,6 +1,7 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
+using GsmsLibrary;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -27,19 +28,30 @@ namespace GsmsApi.Controllers
         /// <summary>
         /// Get All the stores, the brandId parameter is optional. Provide the brandId in case you want to 
         /// filter stores by brand
+        /// <param name="brandId">Filter based on Brand</param>
+        /// <param name="sortByName">Sort by Brand Name</param>
+        /// <param name="sortByDate">Sort by Brand Created Date</param>
+        /// <param name="page">Page number, 0 to get all</param>
+        /// <param name="pageSize">Page Size</param>
         /// </summary>
         /// <returns>List of stores</returns>
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Store>), 200)]
-        public async Task<IActionResult> GetsAsync([FromQuery] string? brandId)
+        public async Task<IActionResult> GetsAsync(
+            [FromQuery] string brandId,
+            [FromQuery] SortType? sortByName,
+            [FromQuery] SortType? sortByDate,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10
+            )
         {
             IEnumerable<Store> stores;
             try
             {
                 if (string.IsNullOrEmpty(brandId))
                 {
-                    stores = await storeEntity.GetStoresAsync();
+                    stores = await storeEntity.GetStoresAsync(sortByName, sortByDate, page, pageSize);
                 }
                 else
                 {
