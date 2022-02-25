@@ -1,6 +1,7 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
+using GsmsLibrary;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,15 +27,24 @@ namespace GsmsApi.Controllers
         /// <summary>
         /// Get All the receipts
         /// </summary>
+        /// <param name="sortByDate">Sort by Receipt Created Date</param>
+        /// <param name="page">Page number, 0 to get all</param>
+        /// <param name="pageSize">Page Size</param>
         /// <returns>List of receipts</returns>
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Receipt>), 200)]
-        public async Task<IActionResult> GetAsync([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        public async Task<IActionResult> GetAsync(
+            [FromQuery] DateTime? startDate, 
+            [FromQuery] DateTime? endDate,
+            [FromQuery] SortType? sortByDate,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
             try
             {
-                IEnumerable<Receipt> receipts = await receiptEntity.GetReceiptsAsync(startDate, endDate);
+                IEnumerable<Receipt> receipts = await receiptEntity
+                    .GetReceiptsAsync(startDate, endDate, sortByDate, page, pageSize);
                 return StatusCode(200, receipts);
             }
             catch (Exception ex)

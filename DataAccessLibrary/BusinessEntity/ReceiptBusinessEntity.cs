@@ -55,15 +55,34 @@ namespace DataAccessLibrary.BusinessEntity
             return newReceipt;
         }
 
-        public async Task<IEnumerable<Receipt>> GetReceiptsAsync(DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<Receipt>> GetReceiptsAsync(
+            DateTime? startDate, 
+            DateTime? endDate,
+            SortType? sortByDate,
+            int page,
+            int pageSize)
         {
             IEnumerable<Receipt> receipts = await work.Receipts.GetAllAsync();
             receipts = receipts.Where(r => r.IsDeleted == false);
             if (startDate.HasValue && endDate.HasValue)
             {
-                receipts = receipts.Where(r => r.CreatedDate >= startDate || r.CreatedDate <= endDate);
+                receipts = receipts.Where(r => r.CreatedDate >= startDate && r.CreatedDate <= endDate);
             }
-            return receipts.OrderBy(r => r.CreatedDate);
+            if (sortByDate.HasValue)
+            {
+                receipts = GsmsUtils.Sort(receipts, r => r.CreatedDate, sortByDate.Value);
+            } else if(!sortByDate.HasValue)
+            {
+                receipts = GsmsUtils.Sort(receipts, r => r.CreatedDate, SortType.DESC);
+            }
+            receipts = GsmsUtils.Paging(receipts, page, pageSize);
+            foreach(Receipt receipt in receipts)
+            {
+                string sql = "select * from ReceiptDetail where ReceiptId = '" + receipt.Id + "'";
+                IEnumerable<ReceiptDetail> details = await work.ReceiptDetails.ExecuteQueryAsync(sql);
+                receipt.ReceiptDetails = details.ToList();
+            }
+            return receipts;
         }
 
         public async Task<Receipt> GetAsync(string id)

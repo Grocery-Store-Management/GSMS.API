@@ -1,6 +1,7 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
+using GsmsLibrary;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -25,15 +26,27 @@ namespace GsmsApi.Controllers
         /// <summary>
         /// Get All the import orders
         /// </summary>
+        /// <param name="startDate" name="endDate">Filter by startDate and endDate</param>
+        /// <param name="sortByName">Sort by Import Order Name</param>
+        /// <param name="sortByDate">Sort by Import Order Created Date</param>
+        /// <param name="page">Page number, 0 to get all</param>
+        /// <param name="pageSize">Page Size</param>
         /// <returns>List of import orders</returns>
         [HttpGet]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<ImportOrder>), 200)]
-        public async Task<IActionResult> GetAsync([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        public async Task<IActionResult> GetAsync(
+            [FromQuery] DateTime? startDate, 
+            [FromQuery] DateTime? endDate,
+            [FromQuery] SortType? sortByName,
+            [FromQuery] SortType? sortByDate,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
             try
             {
-                IEnumerable<ImportOrder> importOrders = await importOrderEntity.GetImportOrdersAsync(startDate, endDate);
+                IEnumerable<ImportOrder> importOrders = await importOrderEntity
+                    .GetImportOrdersAsync(startDate, endDate, sortByName, sortByDate, page, pageSize);
                 return StatusCode(200, importOrders);
             }
             catch (Exception ex)
