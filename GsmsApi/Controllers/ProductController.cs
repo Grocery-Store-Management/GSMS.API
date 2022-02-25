@@ -40,6 +40,7 @@ namespace GsmsApi.Controllers
         public async Task<IActionResult> GetsAsync(
             [FromQuery] string categoryId, 
             [FromQuery] string masterProductId,
+            [FromQuery] string searchByName,
             [FromQuery] SortType? sortByName,
             int page = 1,
             int pageSize = 10
@@ -48,19 +49,7 @@ namespace GsmsApi.Controllers
             IEnumerable<Product> products = new List<Product>();
             try
             {
-                if (string.IsNullOrEmpty(categoryId) && string.IsNullOrEmpty(masterProductId))
-                {
-                    products = await productEntity.GetProductsAsync(sortByName, page, pageSize);
-                } else if (!string.IsNullOrEmpty(categoryId))
-                {
-                    products = await productEntity.GetProductsByCategoryAsync(categoryId);
-                } else if (!string.IsNullOrEmpty(masterProductId))
-                {
-                    products = await productEntity.GetProductsByMasterProductAsync(masterProductId);
-                } else
-                {
-                    // Filter both
-                }
+                products = await productEntity.GetProductsAsync(categoryId, masterProductId, searchByName, sortByName, page, pageSize);
                 return StatusCode(200, products);
             } catch (Exception ex)
             {

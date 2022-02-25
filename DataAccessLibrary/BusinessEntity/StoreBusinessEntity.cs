@@ -17,6 +17,8 @@ namespace DataAccessLibrary.BusinessEntity
         }
 
         public async Task<IEnumerable<Store>> GetStoresAsync(
+            string brandId,
+            string searchByName,
             SortType? sortByName,
             SortType? sortByDate,
             int page,
@@ -27,6 +29,20 @@ namespace DataAccessLibrary.BusinessEntity
             stores = from store in stores
                      where store.IsDeleted == false
                      select store;
+            if (!string.IsNullOrEmpty(brandId))
+            {
+                stores = from store in stores
+                         where store.BrandId.Equals(brandId)
+                         select store;
+            }
+
+            if (!string.IsNullOrEmpty(searchByName))
+            {
+                stores = from store in stores
+                         where store.Name.ToLower().Contains(searchByName.ToLower())
+                         select store;
+            }
+
             if (sortByName.HasValue)
             {
                 stores = GsmsUtils.Sort(stores, s => s.Name, sortByName.Value);
@@ -50,15 +66,6 @@ namespace DataAccessLibrary.BusinessEntity
                 return null;
             }
             return store;
-        }
-
-        public async Task<IEnumerable<Store>> GetStoresAsync(string brandId)
-        {
-            IEnumerable<Store> stores = await work.Stores.GetAllAsync();
-            stores = from store in stores
-                     where store.BrandId.Equals(brandId) && store.IsDeleted == false
-                     select store;
-            return stores;
         }
 
         public async Task<Store> AddStoreAsync(Store newStore)

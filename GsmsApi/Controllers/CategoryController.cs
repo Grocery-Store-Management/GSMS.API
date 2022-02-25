@@ -28,6 +28,7 @@ namespace GsmsApi.Controllers
         /// <summary>
         /// Get All Categories
         /// </summary>
+        /// <param name="searchByName">Search Category by name</param>
         /// <param name="sortByName">Sort By Category Name</param>
         /// <param name="page">Page number, 0 to get all</param>
         /// <param name="pageSize">Page Size</param>
@@ -36,13 +37,14 @@ namespace GsmsApi.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Category>), 200)]
         public async Task<IActionResult> GetAsync(
+            [FromQuery] string searchByName,
             [FromQuery] SortType sortByName,
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10)
         {
             try
             {
-                IEnumerable<Category> categories = await categoryEntity.GetCategoriesAsync(sortByName, page, pageSize);
+                IEnumerable<Category> categories = await categoryEntity.GetCategoriesAsync(searchByName, sortByName, page, pageSize);
                 return StatusCode(200, categories);
             } catch (Exception ex)
             {

@@ -28,6 +28,7 @@ namespace GsmsApi.Controllers
         /// <summary>
         /// Get All Brands
         /// </summary>
+        /// <param name="searchByName">Search Brand by name</param>
         /// <param name="sortByName">Sort by Brand Name</param>
         /// <param name="sortByDate">Sort by Brand Created Date</param>
         /// <param name="page">Page number, 0 to get all</param>
@@ -37,6 +38,7 @@ namespace GsmsApi.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Brand>), 200)]
         public async Task<IActionResult> GetAsync(
+            [FromQuery] string searchByName,
             [FromQuery] SortType? sortByName, 
             [FromQuery] SortType? sortByDate,
             [FromQuery] int page = 1,
@@ -45,7 +47,7 @@ namespace GsmsApi.Controllers
         {
             try
             {
-                IEnumerable<Brand> brands = await brandEntity.GetBrandsAsync(sortByName, sortByDate, page, pageSize);
+                IEnumerable<Brand> brands = await brandEntity.GetBrandsAsync(searchByName, sortByName, sortByDate, page, pageSize);
                 return StatusCode(200, brands);
             }
             catch (Exception ex)

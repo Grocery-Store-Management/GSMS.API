@@ -17,6 +17,9 @@ namespace DataAccessLibrary.BusinessEntity
         }
 
         public async Task<IEnumerable<Product>> GetProductsAsync(
+            string categoryId,
+            string masterProductId,
+            string searchByName,
             SortType? sortByName,
             int page,
             int pageSize
@@ -26,6 +29,27 @@ namespace DataAccessLibrary.BusinessEntity
             products = from product in products
                        where product.IsDeleted == false
                        select product;
+
+            if (!string.IsNullOrEmpty(categoryId))
+            {
+                products = from product in products
+                           where product.CategoryId.Equals(categoryId)
+                           select product;
+            }
+
+            if (!string.IsNullOrEmpty(masterProductId))
+            {
+                products = from product in products
+                           where !string.IsNullOrEmpty(product.MasterProductId) && product.MasterProductId.Equals(masterProductId)
+                           select product;
+            }
+
+            if (!string.IsNullOrEmpty(searchByName))
+            {
+                products = from product in products
+                           where product.Name.ToLower().Contains(searchByName.ToLower())
+                           select product;
+            }
 
             if (sortByName.HasValue)
             {
@@ -45,24 +69,6 @@ namespace DataAccessLibrary.BusinessEntity
                 return null;
             }
             return product;
-        }
-
-        public async Task<IEnumerable<Product>> GetProductsByMasterProductAsync(string masterProductId)
-        {
-            IEnumerable<Product> products = await work.Products.GetAllAsync();
-            products = from product in products
-                       where !string.IsNullOrEmpty(product.MasterProductId) && product.MasterProductId.Equals(masterProductId) && product.IsDeleted == false
-                       select product;
-            return products;
-        }
-
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryId)
-        {
-            IEnumerable<Product> products = await work.Products.GetAllAsync();
-            products = from product in products
-                       where product.CategoryId.Equals(categoryId) && product.IsDeleted == false
-                       select product;
-            return products;
         }
 
         public async Task<Product> AddProductAsync(Product newProduct)
