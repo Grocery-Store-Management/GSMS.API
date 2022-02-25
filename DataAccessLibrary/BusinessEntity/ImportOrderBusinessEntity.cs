@@ -49,15 +49,38 @@ namespace DataAccessLibrary.BusinessEntity
             return newImportOrder;
         }
 
-        public async Task<IEnumerable<ImportOrder>> GetImportOrdersAsync(DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<ImportOrder>> GetImportOrdersAsync(
+            DateTime? startDate, 
+            DateTime? endDate,
+            SortType? sortByName,
+            SortType? sortByDate,
+            int page,
+            int pageSize)
         {
             IEnumerable<ImportOrder> importOrders = await work.ImportOrders.GetAllAsync();
             importOrders = importOrders.Where(i => i.IsDeleted == false);
             if (startDate.HasValue && endDate.HasValue)
             {
-                importOrders = importOrders.Where(i => i.CreatedDate >= startDate || i.CreatedDate <= endDate);
+                importOrders = importOrders.Where(i => i.CreatedDate >= startDate && i.CreatedDate <= endDate);
             }
-            return importOrders.OrderBy(i => i.Name);
+            if (sortByName.HasValue)
+            {
+                importOrders = GsmsUtils.Sort(importOrders, i => i.Name, sortByName.Value);
+            } else if(sortByDate.HasValue)
+            {
+                importOrders = GsmsUtils.Sort(importOrders, i => i.CreatedDate, sortByDate.Value);
+            } else if(!sortByName.HasValue && !sortByDate.HasValue)
+            {
+                importOrders = GsmsUtils.Sort(importOrders, i => i.CreatedDate, SortType.DESC);
+            }
+            importOrders = GsmsUtils.Paging(importOrders, page, pageSize);
+            foreach (ImportOrder importOrder in importOrders)
+            {
+                string sql = "select * from ImportOrderDetail where ImportOrderId = '" + importOrder.Id + "'";
+                IEnumerable<ImportOrderDetail> details = await work.ImportOrderDetails.ExecuteQueryAsync(sql);
+                importOrder.ImportOrderDetails = details.ToList();
+            }
+            return importOrders;
         }
 
         public async Task<ImportOrder> GetAsync(string id)
