@@ -28,6 +28,7 @@ namespace DataAccessLibrary.BusinessEntity
         }
 
         public async Task<IEnumerable<Brand>> GetBrandsAsync(
+            string searchByName,
             SortType? sortByName,
             SortType? sortByDate,
             int page,
@@ -38,6 +39,12 @@ namespace DataAccessLibrary.BusinessEntity
             brands = from brand in brands
                      where brand.IsDeleted == false
                      select brand;
+            if (!string.IsNullOrEmpty(searchByName))
+            {
+                brands = from brand in brands
+                         where brand.Name.ToLower().Contains(searchByName.ToLower())
+                         select brand;
+            }
             if (sortByName.HasValue)
             {
                 brands = GsmsUtils.Sort(brands, b => b.Name, sortByName.Value);

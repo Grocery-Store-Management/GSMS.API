@@ -29,6 +29,7 @@ namespace GsmsApi.Controllers
         /// Get All the stores, the brandId parameter is optional. Provide the brandId in case you want to 
         /// filter stores by brand
         /// <param name="brandId">Filter based on Brand</param>
+        /// <param name="searchByName">Search Store by name</param>
         /// <param name="sortByName">Sort by Brand Name</param>
         /// <param name="sortByDate">Sort by Brand Created Date</param>
         /// <param name="page">Page number, 0 to get all</param>
@@ -40,6 +41,7 @@ namespace GsmsApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<Store>), 200)]
         public async Task<IActionResult> GetsAsync(
             [FromQuery] string brandId,
+            [FromQuery] string searchByName,
             [FromQuery] SortType? sortByName,
             [FromQuery] SortType? sortByDate,
             [FromQuery] int page = 1,
@@ -49,14 +51,7 @@ namespace GsmsApi.Controllers
             IEnumerable<Store> stores;
             try
             {
-                if (string.IsNullOrEmpty(brandId))
-                {
-                    stores = await storeEntity.GetStoresAsync(sortByName, sortByDate, page, pageSize);
-                }
-                else
-                {
-                    stores = await storeEntity.GetStoresAsync(brandId);
-                }
+                stores = await storeEntity.GetStoresAsync(brandId, searchByName, sortByName, sortByDate, page, pageSize);
                 return StatusCode(200, stores);
             }
             catch (Exception ex)

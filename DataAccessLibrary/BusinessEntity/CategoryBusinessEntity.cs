@@ -18,6 +18,7 @@ namespace DataAccessLibrary.BusinessEntity
         }
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync(
+            string searchByName,
             SortType? sortByName,
             int page,
             int pageSize)
@@ -26,6 +27,13 @@ namespace DataAccessLibrary.BusinessEntity
             categories = from category in categories
                          where category.IsDeleted == false
                          select category;
+
+            if (!string.IsNullOrEmpty(searchByName))
+            {
+                categories = from category in categories
+                             where category.Name.ToLower().Contains(searchByName.ToLower())
+                             select category;
+            }
 
             if (sortByName.HasValue)
             {
