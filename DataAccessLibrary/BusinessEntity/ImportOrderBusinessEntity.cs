@@ -52,6 +52,7 @@ namespace DataAccessLibrary.BusinessEntity
         public async Task<IEnumerable<ImportOrder>> GetImportOrdersAsync(
             DateTime? startDate, 
             DateTime? endDate,
+            string? searchByName,
             SortType? sortByName,
             SortType? sortByDate,
             int page,
@@ -62,6 +63,10 @@ namespace DataAccessLibrary.BusinessEntity
             if (startDate.HasValue && endDate.HasValue)
             {
                 importOrders = importOrders.Where(i => i.CreatedDate >= startDate && i.CreatedDate <= endDate);
+            }
+            if (!string.IsNullOrEmpty(searchByName))
+            {
+                importOrders = importOrders.Where(i => i.Name.ToLower().Contains(searchByName.Trim().ToLower()));
             }
             if (sortByName.HasValue)
             {

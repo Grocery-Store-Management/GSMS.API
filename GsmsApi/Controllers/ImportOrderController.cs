@@ -27,6 +27,7 @@ namespace GsmsApi.Controllers
         /// Get All the import orders
         /// </summary>
         /// <param name="startDate" name="endDate">Filter by startDate and endDate</param>
+        /// <param name="searchByName">Search by Import Order Name</param>
         /// <param name="sortByName">Sort by Import Order Name</param>
         /// <param name="sortByDate">Sort by Import Order Created Date</param>
         /// <param name="page">Page number, 0 to get all</param>
@@ -38,6 +39,7 @@ namespace GsmsApi.Controllers
         public async Task<IActionResult> GetAsync(
             [FromQuery] DateTime? startDate, 
             [FromQuery] DateTime? endDate,
+            [FromQuery] string? searchByName,
             [FromQuery] SortType? sortByName,
             [FromQuery] SortType? sortByDate,
             [FromQuery] int page = 1,
@@ -46,7 +48,7 @@ namespace GsmsApi.Controllers
             try
             {
                 IEnumerable<ImportOrder> importOrders = await importOrderEntity
-                    .GetImportOrdersAsync(startDate, endDate, sortByName, sortByDate, page, pageSize);
+                    .GetImportOrdersAsync(startDate, endDate, searchByName, sortByName, sortByDate, page, pageSize);
                 return StatusCode(200, importOrders);
             }
             catch (Exception ex)
