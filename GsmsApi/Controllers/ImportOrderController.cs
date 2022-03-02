@@ -2,6 +2,7 @@
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
 using GsmsLibrary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace GsmsApi.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v1.0/import-orders")]
+    [Authorize]
+
     public class ImportOrderController : ControllerBase
     {
         private ImportOrderBusinessEntity importOrderEntity;

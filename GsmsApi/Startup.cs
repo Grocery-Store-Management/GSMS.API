@@ -1,3 +1,5 @@
+using GsmsLibrary;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -33,7 +36,18 @@ namespace GsmsApi
             );
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GsmsApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "GsmsApi", 
+                    Version = "v1" 
+                });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Firebase JWT Authorization header using Bearer scheme.",
+                    Name = "Firebase Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
             });
 
             // API Versioning
@@ -43,6 +57,21 @@ namespace GsmsApi
                 x.AssumeDefaultVersionWhenUnspecified = true;
                 x.ReportApiVersions = true;
             });
+
+            // Authentication with Firebase
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://securetoken.google.com/<your-firebase-project-name>";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = GsmsConfiguration.ValidIssuer,
+                        ValidateAudience = true,
+                        ValidAudience = GsmsConfiguration.ValidAudience,
+                        ValidateLifetime = true
+                    };
+                });
 
             // API Calling Settings
             services.AddCors(c =>
@@ -67,6 +96,7 @@ namespace GsmsApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseCors(options =>
