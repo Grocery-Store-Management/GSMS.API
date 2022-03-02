@@ -15,7 +15,7 @@ namespace GsmsApi.Controllers
     //PhongNT
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/stores")]
+    [Route("api/v1.0/stores")]
     public class StoreController : ControllerBase
     {
         private StoreBusinessEntity storeEntity;
@@ -40,12 +40,12 @@ namespace GsmsApi.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Store>), 200)]
         public async Task<IActionResult> GetsAsync(
-            [FromQuery] string brandId,
-            [FromQuery] string searchByName,
-            [FromQuery] SortType? sortByName,
-            [FromQuery] SortType? sortByDate,
+            [FromQuery(Name = "brand-id")] string brandId,
+            [FromQuery(Name = "search-by-name")] string searchByName,
+            [FromQuery(Name = "sort-by-name")] SortType? sortByName,
+            [FromQuery(Name = "sort-by-date")] SortType? sortByDate,
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10
+            [FromQuery(Name = "page-size")] int pageSize = 10
             )
         {
             IEnumerable<Store> stores;
