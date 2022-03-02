@@ -15,7 +15,7 @@ namespace GsmsApi.Controllers
     //PhongNT
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/products")]
+    [Route("api/v1.0/products")]
     public class ProductController : ControllerBase
     {
         private ProductBusinessEntity productEntity;
@@ -38,12 +38,12 @@ namespace GsmsApi.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Product>), 200)]
         public async Task<IActionResult> GetsAsync(
-            [FromQuery] string categoryId, 
-            [FromQuery] string masterProductId,
-            [FromQuery] string searchByName,
-            [FromQuery] SortType? sortByName,
-            int page = 1,
-            int pageSize = 10
+            [FromQuery(Name = "category-id")] string categoryId, 
+            [FromQuery(Name = "master-product-id")] string masterProductId,
+            [FromQuery(Name = "search-by-name")] string searchByName,
+            [FromQuery(Name = "sort-by-name")] SortType? sortByName,
+            [FromQuery] int page = 1,
+            [FromQuery(Name = "page-size")] int pageSize = 10
             )
         {
             IEnumerable<Product> products = new List<Product>();

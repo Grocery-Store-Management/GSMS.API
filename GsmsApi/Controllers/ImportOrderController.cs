@@ -12,7 +12,7 @@ namespace GsmsApi.Controllers
     //PhucVVT
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/import-orders")]
+    [Route("api/v1.0/import-orders")]
     public class ImportOrderController : ControllerBase
     {
         private ImportOrderBusinessEntity importOrderEntity;
@@ -37,13 +37,13 @@ namespace GsmsApi.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<ImportOrder>), 200)]
         public async Task<IActionResult> GetAsync(
-            [FromQuery] DateTime? startDate, 
-            [FromQuery] DateTime? endDate,
-            [FromQuery] string? searchByName,
-            [FromQuery] SortType? sortByName,
-            [FromQuery] SortType? sortByDate,
+            [FromQuery(Name = "start-date")] DateTime? startDate, 
+            [FromQuery(Name = "end-date")] DateTime? endDate,
+            [FromQuery(Name = "search-by-name")] string searchByName,
+            [FromQuery(Name = "sort-by-name")] SortType? sortByName,
+            [FromQuery(Name = "sort-by-date")] SortType? sortByDate,
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery(Name = "page-size")] int pageSize = 10)
         {
             try
             {

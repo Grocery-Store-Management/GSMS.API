@@ -15,7 +15,7 @@ namespace GsmsApi.Controllers
     //PhongNT
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/categories")]
+    [Route("api/v1.0/categories")]
     public class CategoryController : ControllerBase
     {
         private CategoryBusinessEntity categoryEntity;
@@ -37,10 +37,10 @@ namespace GsmsApi.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Category>), 200)]
         public async Task<IActionResult> GetAsync(
-            [FromQuery] string searchByName,
-            [FromQuery] SortType sortByName,
+            [FromQuery(Name = "search-by-name")] string searchByName,
+            [FromQuery(Name = "sort-by-name")] SortType sortByName,
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery(Name = "page-size")] int pageSize = 10)
         {
             try
             {

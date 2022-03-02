@@ -14,7 +14,7 @@ namespace GsmsApi.Controllers
     //PhucVVT
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/import-order-details")]
+    [Route("api/v1.0/import-order-details")]
     public class ImportOrderDetailController : ControllerBase
     {
         private ImportOrderDetailBusinessEntity importOrderDetailEntity;
