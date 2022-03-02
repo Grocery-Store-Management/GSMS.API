@@ -1,6 +1,7 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,7 +14,9 @@ namespace GsmsApi.Controllers
     //PhucVVT
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/receipt-details")]
+    [Route("api/v1.0/receipt-details")]
+    [Authorize]
+
     public class ReceiptDetailController : ControllerBase
     {
         private ReceiptDetailBusinessEntity receiptDetailEntity;

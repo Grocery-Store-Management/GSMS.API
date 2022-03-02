@@ -2,6 +2,7 @@
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
 using GsmsLibrary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,8 @@ namespace GsmsApi.Controllers
     //PhongNT
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{v:apiVersion}/brands")]
+    [Route("api/v1.0/brands")]
+    [Authorize]
     public class BrandController : ControllerBase
     {
         private BrandBusinessEntity brandEntity;
@@ -38,11 +40,11 @@ namespace GsmsApi.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(IEnumerable<Brand>), 200)]
         public async Task<IActionResult> GetAsync(
-            [FromQuery] string searchByName,
-            [FromQuery] SortType? sortByName, 
-            [FromQuery] SortType? sortByDate,
+            [FromQuery(Name = "search-by-name")] string searchByName,
+            [FromQuery(Name = "sort-by-name")] SortType? sortByName, 
+            [FromQuery(Name = "sort-by-date")] SortType? sortByDate,
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10
+            [FromQuery(Name = "page-size")] int pageSize = 10
             )
         {
             try
