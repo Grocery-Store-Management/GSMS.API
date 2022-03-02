@@ -2,6 +2,7 @@
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
 using GsmsLibrary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace GsmsApi.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v1.0/products")]
+    [Authorize]
+
     public class ProductController : ControllerBase
     {
         private ProductBusinessEntity productEntity;
@@ -43,8 +46,7 @@ namespace GsmsApi.Controllers
             [FromQuery(Name = "search-by-name")] string searchByName,
             [FromQuery(Name = "sort-by-name")] SortType? sortByName,
             [FromQuery] int page = 1,
-            [FromQuery(Name = "page-size")] int pageSize = 10
-            )
+            [FromQuery(Name = "page-size")] int pageSize = 10)
         {
             IEnumerable<Product> products = new List<Product>();
             try

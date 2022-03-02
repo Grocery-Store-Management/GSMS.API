@@ -28,6 +28,11 @@ namespace GsmsLibrary
         public static string ConnectionString
             => GetConfiguration()["ConnectionStrings:GsmsDb"];
 
+        public static string ValidIssuer
+            => GetConfiguration()["Jwt:Firebase:ValidIssuer"];
+
+        public static string ValidAudience
+            => GetConfiguration()["Jwt:Firebase:ValidAudience"];
         #endregion
     }
 }

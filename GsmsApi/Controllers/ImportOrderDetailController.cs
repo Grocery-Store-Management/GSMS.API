@@ -1,6 +1,7 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,6 +16,8 @@ namespace GsmsApi.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v1.0/import-order-details")]
+    [Authorize]
+
     public class ImportOrderDetailController : ControllerBase
     {
         private ImportOrderDetailBusinessEntity importOrderDetailEntity;
