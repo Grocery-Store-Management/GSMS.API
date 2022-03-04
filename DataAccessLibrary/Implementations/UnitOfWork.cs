@@ -71,9 +71,20 @@ namespace DataAccessLibrary.Implementations
             }
         }
 
-        public int Save()
+        public async Task<int> Save()
         {
-            return context.SaveChanges();
+            // Save Changes to Repo
+            //await Brands.SaveChangesToRedis();
+            //await Categories.SaveChangesToRedis();
+            //await ImportOrders.SaveChangesToRedis();
+            //await ImportOrderDetails.SaveChangesToRedis();
+            //await Products.SaveChangesToRedis();
+            //await ProductDetails.SaveChangesToRedis();
+            //await Receipts.SaveChangesToRedis();
+            //await ReceiptDetails.SaveChangesToRedis();
+            //await Stores.SaveChangesToRedis();
+
+            return await context.SaveChangesAsync();
         }
     }
 }

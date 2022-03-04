@@ -45,7 +45,7 @@ namespace DataAccessLibrary.BusinessEntity
                 }
             }
             await work.ImportOrders.AddAsync(newImportOrder);
-            work.Save();
+            await work.Save();
             return newImportOrder;
         }
 
@@ -129,7 +129,7 @@ namespace DataAccessLibrary.BusinessEntity
             }
             importOrder.ImportOrderDetails = updatedImportOrder.ImportOrderDetails;
             work.ImportOrders.Update(importOrder);
-            work.Save();
+            await work.Save();
             return importOrder;
         }
 
@@ -143,7 +143,7 @@ namespace DataAccessLibrary.BusinessEntity
             //work.ImportOrders.Delete(importOrder);
             importOrder.IsDeleted = true;
             work.ImportOrders.Update(importOrder);
-            work.Save();
+            await work.Save();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace DataAccessLibrary.BusinessEntity
             newBrand.CreatedDate = DateTime.Now;
             newBrand.IsDeleted = false;
             await work.Brands.AddAsync(newBrand);
-            work.Save();
+            await work.Save();
             return newBrand;
         }
 
@@ -83,7 +83,7 @@ namespace DataAccessLibrary.BusinessEntity
             brand.Name = updatedBrand.Name;
             brand.IsDeleted = updatedBrand.IsDeleted;
             work.Brands.Update(brand);
-            work.Save();
+            await work.Save();
             return brand;
         }
 
@@ -97,7 +97,7 @@ namespace DataAccessLibrary.BusinessEntity
             //work.Brands.Delete(brand);
             brand.IsDeleted = true;
             work.Brands.Update(brand);
-            work.Save();
+            await work.Save();
         }
     }
 }

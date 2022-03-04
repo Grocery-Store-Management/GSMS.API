@@ -52,5 +52,7 @@ namespace DataAccessLibrary.Interfaces
         /// <param name="sqlQuery">SELECT command to execute</param>
         /// <returns>List of entities that satisfies the command</returns>
         Task<IEnumerable<T>> ExecuteQueryAsync(string sqlQuery);
+
+        //Task SaveChangesToRedis();
     }
 }

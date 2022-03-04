@@ -98,6 +98,13 @@ namespace GsmsApi
                 c.AddPolicy("AllowHeader", options => options.AllowAnyHeader());
                 c.AddPolicy("AllowMethod", options => options.AllowAnyMethod());
             });
+
+            //Redis
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = GsmsConfiguration.RedisConnectionString;
+                options.InstanceName = GsmsConfiguration.RedisInstanceName;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
