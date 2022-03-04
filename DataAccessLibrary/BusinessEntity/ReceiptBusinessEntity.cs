@@ -51,7 +51,7 @@ namespace DataAccessLibrary.BusinessEntity
                 }
             }
             await work.Receipts.AddAsync(newReceipt);
-            work.Save();
+            await work.Save();
             return newReceipt;
         }
 
@@ -140,7 +140,7 @@ namespace DataAccessLibrary.BusinessEntity
             }
             receipt.ReceiptDetails = updatedReceipt.ReceiptDetails;
             work.Receipts.Update(receipt);
-            work.Save();
+            await work.Save();
             return receipt;
         }
 
@@ -154,7 +154,7 @@ namespace DataAccessLibrary.BusinessEntity
             //work.Receipts.Delete(receipt);
             receipt.IsDeleted = true;
             work.Receipts.Update(receipt);
-            work.Save();
+            await work.Save();
         }
     }
 }

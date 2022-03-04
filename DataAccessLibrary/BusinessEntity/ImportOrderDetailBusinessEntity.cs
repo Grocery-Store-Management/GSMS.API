@@ -30,8 +30,9 @@ namespace DataAccessLibrary.BusinessEntity
             }
             newImportOrderDetail.Id = GsmsUtils.CreateGuiId();
             newImportOrderDetail.IsDeleted = false;
+            newImportOrderDetail.ImportOrder = null;
             await work.ImportOrderDetails.AddAsync(newImportOrderDetail);
-            work.Save();
+            await work.Save();
             return newImportOrderDetail;
         }
 
@@ -101,8 +102,9 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 importOrderDetail.IsDeleted = updatedImportOrderDetail.IsDeleted;
             }
+            importOrderDetail.ImportOrder = null;
             work.ImportOrderDetails.Update(importOrderDetail);
-            work.Save();
+            await work.Save();
             return importOrderDetail;
         }
 
@@ -114,7 +116,7 @@ namespace DataAccessLibrary.BusinessEntity
                 throw new Exception("Import order detail is not existed!!");
             }
             work.ImportOrderDetails.Delete(importOrderDetail);
-            work.Save();
+            await work.Save();
         }
 
         public async Task DeleteImportOrderDetailsByImportOrderIdAsync(string importOrderId)
@@ -130,7 +132,7 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 work.ImportOrderDetails.Delete(removedImportOrderDetail);
             }
-            work.Save();
+            await work.Save();
         }
     }
 }

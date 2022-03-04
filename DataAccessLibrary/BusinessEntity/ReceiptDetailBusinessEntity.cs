@@ -29,8 +29,10 @@ namespace DataAccessLibrary.BusinessEntity
                 throw new Exception("Product is not existed!!");
             }
             newReceiptDetail.Id = GsmsUtils.CreateGuiId();
+            newReceiptDetail.Receipt = null;
+
             await work.ReceiptDetails.AddAsync(newReceiptDetail);
-            work.Save();
+            await work.Save();
             return newReceiptDetail;
         }
 
@@ -84,8 +86,9 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 receiptDetail.Quantity = updatedReceiptDetail.Quantity;
             }
+            receiptDetail.Receipt = null;
             work.ReceiptDetails.Update(receiptDetail);
-            work.Save();
+            await work.Save();
             return receiptDetail;
         }
 
@@ -97,7 +100,7 @@ namespace DataAccessLibrary.BusinessEntity
                 throw new Exception("Receipt detail is not existed!!");
             }
             work.ReceiptDetails.Delete(receiptDetail);
-            work.Save();
+            await work.Save();
         }
 
         public async Task DeleteReceiptDetailsByReceiptIdAsync(string receiptId)
@@ -113,7 +116,7 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 work.ReceiptDetails.Delete(removedReceiptDetail);
             }
-            work.Save();
+            await work.Save();
         }
     }
 }

@@ -92,7 +92,7 @@ namespace DataAccessLibrary.BusinessEntity
                 }
             }
             await work.Products.AddAsync(newProduct);
-            work.Save();
+            await work.Save();
             return newProduct;
         }
 
@@ -127,7 +127,7 @@ namespace DataAccessLibrary.BusinessEntity
                 product.ProductDetails = updatedProduct.ProductDetails;
             }
             work.Products.Update(product);
-            work.Save();
+            await work.Save();
             return product;
         }
 
@@ -162,7 +162,7 @@ namespace DataAccessLibrary.BusinessEntity
             //work.Products.Delete(product);
             product.IsDeleted = true;
             work.Products.Update(product);
-            work.Save();
+            await work.Save();
         }
     }
 }

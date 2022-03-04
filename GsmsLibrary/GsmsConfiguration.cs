@@ -33,6 +33,12 @@ namespace GsmsLibrary
 
         public static string ValidAudience
             => GetConfiguration()["Jwt:Firebase:ValidAudience"];
+
+        public static string RedisConnectionString
+            => GetConfiguration()["ConnectionStrings:Redis"];
+
+        public static string RedisInstanceName
+            => GetConfiguration()["Redis:InstanceName"];
         #endregion
     }
 }

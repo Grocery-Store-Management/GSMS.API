@@ -81,8 +81,9 @@ namespace DataAccessLibrary.BusinessEntity
         {
             await CheckProductDetail (newProductDetail);
             newProductDetail.Id = GsmsUtils.CreateGuiId();
+            newProductDetail.Product = null;
             await work.ProductDetails.AddAsync(newProductDetail);
-            work.Save();
+            await work.Save();
             return newProductDetail;
         }
 
@@ -98,8 +99,9 @@ namespace DataAccessLibrary.BusinessEntity
             productDetail.Price = updatedProductDetail.Price;
             productDetail.Status = updatedProductDetail.Status;
             productDetail.StoredQuantity = updatedProductDetail.StoredQuantity;
+            productDetail.Product = null;
             work.ProductDetails.Update(productDetail);
-            work.Save();
+            await work.Save();
             return productDetail;
         }
         private async Task CheckProductDetail(ProductDetail productDetail)
@@ -127,7 +129,7 @@ namespace DataAccessLibrary.BusinessEntity
                 throw new Exception("Product Detail is not existed!!");
             }
             work.ProductDetails.Delete(productDetail);
-            work.Save();
+            await work.Save();
         }
     }
 }
