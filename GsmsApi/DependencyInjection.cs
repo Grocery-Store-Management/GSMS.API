@@ -2,6 +2,7 @@
 using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Implementations;
 using DataAccessLibrary.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,10 @@ namespace GsmsApi
         public static IServiceCollection AddRepository(this IServiceCollection services)
         {
             #region DbContext
-            services.AddDbContext<GsmsContext>();
+            services.AddDbContext<GsmsContext>(options =>
+            {
+                options.UseSqlServer(GsmsLibrary.GsmsConfiguration.ConnectionString);
+            });
             #endregion
 
             #region Repository
