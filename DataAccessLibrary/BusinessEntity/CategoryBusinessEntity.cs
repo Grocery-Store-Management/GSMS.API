@@ -60,7 +60,7 @@ namespace DataAccessLibrary.BusinessEntity
             newCategory.Id = GsmsUtils.CreateGuiId();
             newCategory.IsDeleted = false;
             await work.Categories.AddAsync(newCategory);
-            work.Save();
+            await work.Save();
             return newCategory;
         }
 
@@ -74,7 +74,7 @@ namespace DataAccessLibrary.BusinessEntity
             category.Name = updatedCategory.Name;
             category.IsDeleted = updatedCategory.IsDeleted;
             work.Categories.Update(category);
-            work.Save();
+            await work.Save();
             return category;
         }
 
@@ -88,7 +88,7 @@ namespace DataAccessLibrary.BusinessEntity
             //work.Categories.Delete(category);
             category.IsDeleted = true;
             work.Categories.Update(category);
-            work.Save();
+            await work.Save();
         }
     }
 }

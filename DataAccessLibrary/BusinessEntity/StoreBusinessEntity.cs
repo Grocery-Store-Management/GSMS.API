@@ -75,7 +75,7 @@ namespace DataAccessLibrary.BusinessEntity
             newStore.CreatedDate = DateTime.Now;
             newStore.IsDeleted = false;
             await work.Stores.AddAsync(newStore);
-            work.Save();
+            await work.Save();
             return newStore;
         }
 
@@ -91,7 +91,7 @@ namespace DataAccessLibrary.BusinessEntity
             store.IsDeleted = updatedStore.IsDeleted;
             store.BrandId = updatedStore.BrandId;
             work.Stores.Update(store);
-            work.Save();
+            await work.Save();
             return store;
         }
 
@@ -113,7 +113,7 @@ namespace DataAccessLibrary.BusinessEntity
             //work.Stores.Delete(store);
             store.IsDeleted = true;
             work.Stores.Update(store);
-            work.Save();
+            await work.Save();
         }
     }
 }

@@ -26,6 +26,6 @@ namespace DataAccessLibrary.Interfaces
         /// Save changes to database
         /// </summary>
         /// <returns></returns>
-        int Save();
+        Task<int> Save();
     }
 }
