@@ -109,6 +109,8 @@ namespace DataAccessLibrary.BusinessEntity
             product.MasterProductId = updatedProduct.MasterProductId;
             product.CategoryId = updatedProduct.CategoryId;
             product.IsDeleted = updatedProduct.IsDeleted;
+            product.ImageUrl = updatedProduct.ImageUrl;
+
             if (updatedProduct.ProductDetails.Any())
             {
                 foreach (ProductDetail productDetail in updatedProduct.ProductDetails)
