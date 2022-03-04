@@ -1,5 +1,4 @@
 ﻿using System;
-using GsmsLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -32,7 +31,7 @@ namespace BusinessObjectLibrary
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(GsmsConfiguration.ConnectionString);
+                optionsBuilder.UseSqlServer();
             }
         }
 
@@ -116,6 +115,8 @@ namespace BusinessObjectLibrary
                 entity.Property(e => e.AtomicPrice).HasColumnType("money");
 
                 entity.Property(e => e.CategoryId).HasMaxLength(40);
+
+                entity.Property(e => e.ImageUrl).HasMaxLength(255);
 
                 entity.Property(e => e.MasterProductId).HasMaxLength(40);
 
