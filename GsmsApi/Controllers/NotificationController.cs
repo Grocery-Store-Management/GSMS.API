@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Nancy.Json;
 using PushNotification.Models;
 using PushNotification.Service;
 using System;
