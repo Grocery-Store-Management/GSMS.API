@@ -11,13 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Data Access Layer", "3. 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Shared", "4. Shared", "{24E0087B-2929-48A0-BD38-4D05D951485D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GsmsApi", "GsmsApi\GsmsApi.csproj", "{CB984F04-0E0E-424F-9B13-B44E451A34BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GsmsApi", "GsmsApi\GsmsApi.csproj", "{CB984F04-0E0E-424F-9B13-B44E451A34BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObjectLibrary", "BusinessObjectLibrary\BusinessObjectLibrary.csproj", "{4DCC12F9-5141-41AC-970E-D53194041891}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObjectLibrary", "BusinessObjectLibrary\BusinessObjectLibrary.csproj", "{4DCC12F9-5141-41AC-970E-D53194041891}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{6B0B02B9-1EDF-4AFF-AF76-15DCB2FF825B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{6B0B02B9-1EDF-4AFF-AF76-15DCB2FF825B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GsmsLibrary", "GsmsLibrary\GsmsLibrary.csproj", "{CC1FC2CB-2E6D-4A53-9D8F-CC11AFA6B6BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GsmsLibrary", "GsmsLibrary\GsmsLibrary.csproj", "{CC1FC2CB-2E6D-4A53-9D8F-CC11AFA6B6BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Push Notification", "5. Push Notification", "{DFCCDD16-FA4A-497F-A27F-A1A3796EA3D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotification", "PushNotification\PushNotification.csproj", "{02B765A2-C642-4AAD-95AC-05CA1B289E14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,10 @@ Global
 		{CC1FC2CB-2E6D-4A53-9D8F-CC11AFA6B6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC1FC2CB-2E6D-4A53-9D8F-CC11AFA6B6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC1FC2CB-2E6D-4A53-9D8F-CC11AFA6B6BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02B765A2-C642-4AAD-95AC-05CA1B289E14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02B765A2-C642-4AAD-95AC-05CA1B289E14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02B765A2-C642-4AAD-95AC-05CA1B289E14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02B765A2-C642-4AAD-95AC-05CA1B289E14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +58,7 @@ Global
 		{4DCC12F9-5141-41AC-970E-D53194041891} = {EF52A94D-9905-4650-AE6A-96CE05BACAE3}
 		{6B0B02B9-1EDF-4AFF-AF76-15DCB2FF825B} = {665912B6-F456-4A3B-B09C-DFC90B3A90B6}
 		{CC1FC2CB-2E6D-4A53-9D8F-CC11AFA6B6BF} = {24E0087B-2929-48A0-BD38-4D05D951485D}
+		{02B765A2-C642-4AAD-95AC-05CA1B289E14} = {DFCCDD16-FA4A-497F-A27F-A1A3796EA3D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D48B018-F45A-4FBA-A9F2-7316C09AD71F}

@@ -17,6 +17,7 @@
     <ProjectReference Include="..\BusinessObjectLibrary\BusinessObjectLibrary.csproj" />
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
     <ProjectReference Include="..\GsmsLibrary\GsmsLibrary.csproj" />
+    <ProjectReference Include="..\PushNotification\PushNotification.csproj" />
   </ItemGroup>
 
 </Project>
