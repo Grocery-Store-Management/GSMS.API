@@ -65,13 +65,13 @@ namespace DataAccessLibrary.Implementations
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            //List<T> cachedDatas = await cache.GetAsync<List<T>>(typeof(T).ToString());
-            //if (cachedDatas == null)
-            //{
-            //    cachedDatas = await dbSet.ToListAsync();
-            //    await cache.SetAsync(typeof(T).ToString(), cachedDatas);
-            //}
-            List<T> cachedDatas = await dbSet.ToListAsync();
+            List<T> cachedDatas = await cache.GetAsync<List<T>>(typeof(T).ToString());
+            if (cachedDatas == null)
+            {
+                cachedDatas = await dbSet.ToListAsync();
+                await cache.SetAsync(typeof(T).ToString(), cachedDatas);
+            }
+            //List<T> cachedDatas = await dbSet.ToListAsync();
             return cachedDatas;
         }
 
@@ -80,9 +80,10 @@ namespace DataAccessLibrary.Implementations
             dbSet.Update(entity);
         }
 
-        //public async Task SaveChangesToRedis()
-        //{
-        //    await cache.SetAsync(typeof(T).ToString(), dbSet.ToListAsync());
-        //}
+        public async Task SaveChangesToRedis()
+        {
+            List<T> list = dbSet.ToList();
+            await cache.SetAsync(typeof(T).ToString(), list);
+        }
     }
 }
