@@ -65,12 +65,15 @@ namespace DataAccessLibrary.Implementations
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            List<T> cachedDatas = await cache.GetAsync<List<T>>(typeof(T).ToString());
-            if (cachedDatas == null)
-            {
-                cachedDatas = await dbSet.ToListAsync();
-                await cache.SetAsync(typeof(T).ToString(), cachedDatas);
-            }
+
+            //List<T> cachedDatas = await cache.GetAsync<List<T>>(typeof(T).ToString());
+            //if (cachedDatas == null)
+            //{
+            //    cachedDatas = await dbSet.ToListAsync();
+            //    await cache.SetAsync(typeof(T).ToString(), cachedDatas);
+            //}
+            List<T> cachedDatas = await dbSet.ToListAsync();
+
             return cachedDatas;
         }
 
