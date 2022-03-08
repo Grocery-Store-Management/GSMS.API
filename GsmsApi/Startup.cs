@@ -1,3 +1,4 @@
+using CorePush.Google;
 using GsmsLibrary;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PushNotification.Models;
+using PushNotification.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,6 +108,9 @@ namespace GsmsApi
                 options.Configuration = GsmsConfiguration.RedisConnectionString;
                 options.InstanceName = GsmsConfiguration.RedisInstanceName;
             });
+
+            //Push notification 
+            services.AddTransient<INotificationService, NotificationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
