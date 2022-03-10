@@ -32,8 +32,8 @@ namespace DataAccessLibrary.BusinessEntity
                 {
                     importOrderDetail.Id = GsmsUtils.CreateGuiId();
                     Product product = await work.Products.GetAsync(importOrderDetail.ProductId);
-                    //IEnumerable<ProductDetail> productDetails = await work.ProductDetails.GetAllAsync();
-                    //ProductDetail productDetail = productDetails.Where(p => p.ProductId == product.Id).FirstOrDefault();
+                    IEnumerable<ProductDetail> productDetails = await work.ProductDetails.GetAllAsync();
+                    ProductDetail productDetail = productDetails.Where(p => p.ProductId == product.Id).FirstOrDefault();
                     if (product == null || product.IsDeleted == true)
                     {
                         throw new Exception("Product is not existed!!");
@@ -42,6 +42,9 @@ namespace DataAccessLibrary.BusinessEntity
                     importOrderDetail.Name = product.Name;
                     //importOrderDetail.Price = productDetail.Price;
                     await work.ImportOrderDetails.AddAsync(importOrderDetail);
+                    productDetail.StoredQuantity += importOrderDetail.Quantity;
+                    productDetail.Product = null;
+                    work.ProductDetails.Update(productDetail);
                 }
             }
             await work.ImportOrders.AddAsync(newImportOrder);

@@ -47,6 +47,7 @@ namespace DataAccessLibrary.BusinessEntity
                     receiptDetail.Price = productDetail.Price;
                     await work.ReceiptDetails.AddAsync(receiptDetail);
                     productDetail.StoredQuantity -= receiptDetail.Quantity;
+                    productDetail.Product = null;
                     work.ProductDetails.Update(productDetail);
                 }
             }
