@@ -69,10 +69,10 @@ namespace GsmsLibrary
             });
             byte[] encodedValue = Encoding.UTF8.GetBytes(jsonValue);
             var options = new DistributedCacheEntryOptions()
-                //.SetAbsoluteExpiration(DateTime.Now.AddHours(2))
-                //.SetSlidingExpiration(TimeSpan.FromHours(1.5));
-                .SetAbsoluteExpiration(DateTime.Now.AddMinutes(15))
-                .SetSlidingExpiration(TimeSpan.FromMinutes(10));
+                .SetAbsoluteExpiration(DateTime.Now.AddHours(2))
+                .SetSlidingExpiration(TimeSpan.FromHours(1.5));
+                //.SetAbsoluteExpiration(DateTime.Now.AddMinutes(15))
+                //.SetSlidingExpiration(TimeSpan.FromMinutes(10));
             await cache.SetAsync(key, encodedValue, options);
         }
 
