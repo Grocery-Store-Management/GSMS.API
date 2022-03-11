@@ -10,7 +10,7 @@ namespace DataAccessLibrary.BusinessEntity
 {
     public class ProductDetailBusinessEntity
     {
-        private IUnitOfWork work; 
+        private IUnitOfWork work;
         public ProductDetailBusinessEntity(IUnitOfWork work)
         {
             this.work = work;
@@ -25,17 +25,20 @@ namespace DataAccessLibrary.BusinessEntity
             int pageSize)
         {
             IEnumerable<ProductDetail> productDetails = await work.ProductDetails.GetAllAsync();
-            
+
             if (sortByPrice.HasValue)
             {
                 productDetails = GsmsUtils.Sort(productDetails, d => d.Price, sortByPrice.Value);
-            } else if (sortByStoredQuantity.HasValue)
+            }
+            else if (sortByStoredQuantity.HasValue)
             {
                 productDetails = GsmsUtils.Sort(productDetails, d => d.StoredQuantity, sortByStoredQuantity.Value);
-            } else if (sortByManufacturingDate.HasValue)
+            }
+            else if (sortByManufacturingDate.HasValue)
             {
                 productDetails = GsmsUtils.Sort(productDetails, d => d.ManufacturingDate, sortByManufacturingDate.Value);
-            } else if (sortByExpiringDate.HasValue)
+            }
+            else if (sortByExpiringDate.HasValue)
             {
                 productDetails = GsmsUtils.Sort(productDetails, d => d.ExpiringDate, sortByExpiringDate.Value);
             }
@@ -43,9 +46,16 @@ namespace DataAccessLibrary.BusinessEntity
             productDetails = GsmsUtils.Paging(productDetails, page, pageSize);
             foreach (ProductDetail productDetail in productDetails)
             {
-                productDetail.Product.ImportOrderDetails = null;
-                productDetail.Product.ReceiptDetails = null;
-                productDetail.Product.Category.Products = null;
+                if (productDetail.Product != null)
+                {
+                    productDetail.Product.ImportOrderDetails = null;
+                    productDetail.Product.ReceiptDetails = null;
+                    if (productDetail.Product.Category != null)
+                    {
+                        productDetail.Product.Category.Products = null;
+
+                    }
+                }
             }
 
             return productDetails;
@@ -85,7 +95,7 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<ProductDetail> AddProductDetailAsync(ProductDetail newProductDetail)
         {
-            await CheckProductDetail (newProductDetail);
+            await CheckProductDetail(newProductDetail);
             newProductDetail.Id = GsmsUtils.CreateGuiId();
             newProductDetail.Product = null;
             await work.ProductDetails.AddAsync(newProductDetail);
@@ -100,7 +110,7 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 throw new Exception("Product Detail is not existed!!");
             }
-            await CheckProductDetail (updatedProductDetail);
+            await CheckProductDetail(updatedProductDetail);
             productDetail.ProductId = updatedProductDetail.ProductId;
             productDetail.Price = updatedProductDetail.Price;
             productDetail.Status = updatedProductDetail.Status;

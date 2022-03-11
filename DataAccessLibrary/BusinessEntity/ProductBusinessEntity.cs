@@ -60,7 +60,10 @@ namespace DataAccessLibrary.BusinessEntity
 
             foreach (Product product in products)
             {
-                product.Category.Products = null;
+                if (product.Category != null)
+                {
+                    product.Category.Products = null;
+                }
                 product.ImportOrderDetails = null;
                 product.ReceiptDetails = null;
             }
