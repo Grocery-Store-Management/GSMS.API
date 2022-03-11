@@ -58,6 +58,13 @@ namespace DataAccessLibrary.BusinessEntity
 
             products = GsmsUtils.Paging(products, page, pageSize);
 
+            foreach (Product product in products)
+            {
+                product.Category.Products = null;
+                product.ImportOrderDetails = null;
+                product.ReceiptDetails = null;
+            }
+
             return products;
         }
 
@@ -78,7 +85,6 @@ namespace DataAccessLibrary.BusinessEntity
             newProduct.IsDeleted = false;
             if (newProduct.ProductDetails.Any())
             {
-
                 foreach (ProductDetail productDetail in newProduct.ProductDetails)
                 {
                     if (productDetail.Price == null || productDetail.Price < 0)
@@ -89,6 +95,8 @@ namespace DataAccessLibrary.BusinessEntity
                     {
                         throw new Exception("Stored Quantity must be a positive integer!!");
                     }
+                    productDetail.Id = GsmsUtils.CreateGuiId();
+                    productDetail.Product = null;
                 }
             }
             await work.Products.AddAsync(newProduct);
@@ -123,6 +131,8 @@ namespace DataAccessLibrary.BusinessEntity
                     {
                         throw new Exception("Stored Quantity must be a positive integer!!");
                     }
+                    productDetail.Id = GsmsUtils.CreateGuiId();
+                    productDetail.Product = null;
                 }
                 product.ProductDetails = updatedProduct.ProductDetails;
             }

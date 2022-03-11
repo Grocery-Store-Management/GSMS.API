@@ -41,6 +41,12 @@ namespace DataAccessLibrary.BusinessEntity
             }
 
             productDetails = GsmsUtils.Paging(productDetails, page, pageSize);
+            foreach (ProductDetail productDetail in productDetails)
+            {
+                productDetail.Product.ImportOrderDetails = null;
+                productDetail.Product.ReceiptDetails = null;
+                productDetail.Product.Category.Products = null;
+            }
 
             return productDetails;
         }
