@@ -86,7 +86,7 @@ namespace DataAccessLibrary.BusinessEntity
             await CheckProduct(newProduct);
             newProduct.Id = GsmsUtils.CreateGuiId();
             newProduct.IsDeleted = false;
-            if (newProduct.ProductDetails.Any())
+            if (newProduct.ProductDetails != null && newProduct.ProductDetails.Any())
             {
                 foreach (ProductDetail productDetail in newProduct.ProductDetails)
                 {
@@ -122,7 +122,7 @@ namespace DataAccessLibrary.BusinessEntity
             product.IsDeleted = updatedProduct.IsDeleted;
             product.ImageUrl = updatedProduct.ImageUrl;
 
-            if (updatedProduct.ProductDetails.Any())
+            if (updatedProduct.ProductDetails != null && updatedProduct.ProductDetails.Any())
             {
                 foreach (ProductDetail productDetail in updatedProduct.ProductDetails)
                 {

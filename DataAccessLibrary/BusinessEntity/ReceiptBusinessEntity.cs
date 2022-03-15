@@ -26,7 +26,7 @@ namespace DataAccessLibrary.BusinessEntity
             newReceipt.Id = GsmsUtils.CreateGuiId();
             newReceipt.CreatedDate = DateTime.Now;
             newReceipt.IsDeleted = false;
-            if (newReceipt.ReceiptDetails.Count > 0)
+            if (newReceipt.ReceiptDetails != null && newReceipt.ReceiptDetails.Count > 0)
             {
                 foreach (ReceiptDetail receiptDetail in newReceipt.ReceiptDetails)
                 {

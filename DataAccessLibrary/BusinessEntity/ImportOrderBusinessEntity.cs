@@ -26,7 +26,7 @@ namespace DataAccessLibrary.BusinessEntity
             newImportOrder.Id = GsmsUtils.CreateGuiId();
             newImportOrder.CreatedDate = DateTime.Now;
             newImportOrder.IsDeleted = false;
-            if (newImportOrder.ImportOrderDetails.Count > 0)
+            if (newImportOrder.ImportOrderDetails != null && newImportOrder.ImportOrderDetails.Count > 0)
             {
                 foreach (ImportOrderDetail importOrderDetail in newImportOrder.ImportOrderDetails)
                 {
