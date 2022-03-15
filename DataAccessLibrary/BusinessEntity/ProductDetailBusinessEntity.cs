@@ -115,7 +115,7 @@ namespace DataAccessLibrary.BusinessEntity
             productDetail.Price = updatedProductDetail.Price;
             productDetail.Status = updatedProductDetail.Status;
             productDetail.StoredQuantity = updatedProductDetail.StoredQuantity;
-            productDetail.Product = null;
+            //productDetail.Product = null;
             work.ProductDetails.Update(productDetail);
             await work.Save();
             return productDetail;
