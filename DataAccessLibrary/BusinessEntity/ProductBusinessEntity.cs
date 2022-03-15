@@ -134,7 +134,7 @@ namespace DataAccessLibrary.BusinessEntity
                     {
                         throw new Exception("Stored Quantity must be a positive integer!!");
                     }
-                    productDetail.Id = GsmsUtils.CreateGuiId();
+                    //productDetail.Id = GsmsUtils.CreateGuiId();
                     productDetail.Product = null;
                 }
                 product.ProductDetails = updatedProduct.ProductDetails;
