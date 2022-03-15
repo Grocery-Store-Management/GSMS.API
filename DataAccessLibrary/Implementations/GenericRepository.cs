@@ -68,6 +68,7 @@ namespace DataAccessLibrary.Implementations
             List<T> cachedDatas = await cache.GetAsync<List<T>>(typeof(T).ToString());
             if (cachedDatas == null)
             {
+                ReduceDbSet();
                 cachedDatas = await dbSet.ToListAsync();
                 await cache.SetAsync(typeof(T).ToString(), cachedDatas);
             }
@@ -82,8 +83,81 @@ namespace DataAccessLibrary.Implementations
 
         public async Task SaveChangesToRedis()
         {
+            ReduceDbSet();
             List<T> list = dbSet.ToList();
             await cache.SetAsync(typeof(T).ToString(), list);
+        }
+
+        private void ReduceDbSet()
+        {
+            switch (dbSet)
+            {
+                case DbSet<Brand> brands:
+                    foreach (Brand brand in brands)
+                    {
+                        brand.Stores = null;
+                    }
+                    break;
+                case DbSet<Category> categories:
+                    foreach (Category category in categories)
+                    {
+                        category.Products = null;
+                    }
+                    break;
+                case DbSet<ImportOrder> importOrders:
+                    foreach (ImportOrder importOrder in importOrders)
+                    {
+                        importOrder.Store = null;
+                        importOrder.ImportOrderDetails = null;
+                    }
+                    break;
+                case DbSet<ImportOrderDetail> importOrderDetails:
+                    foreach (ImportOrderDetail importOrderDetail in importOrderDetails)
+                    {
+                        importOrderDetail.ImportOrder = null;
+                        importOrderDetail.Product = null;
+                    }
+                    break;
+                case DbSet<Product> products:
+                    foreach (Product product in products)
+                    {
+                        product.InverseMasterProduct = null;
+                        product.MasterProduct = null;
+                        product.Category = null;
+                        product.ReceiptDetails = null;
+                        product.ProductDetails = null;
+                        product.ImportOrderDetails = null;
+                    }
+                    break;
+                case DbSet<ProductDetail> productDetails:
+                    foreach (ProductDetail productDetail in productDetails)
+                    {
+                        productDetail.Product = null;
+                    }
+                    break;
+                case DbSet<Receipt> receipts:
+                    foreach (Receipt receipt in receipts)
+                    {
+                        receipt.Store = null;
+                        receipt.ReceiptDetails = null;
+                    }
+                    break;
+                case DbSet<ReceiptDetail> receiptDetails:
+                    foreach (ReceiptDetail receiptDetail in receiptDetails)
+                    {
+                        receiptDetail.Receipt = null;
+                        receiptDetail.Product = null;
+                    }
+                    break;
+                case DbSet<Store> stores:
+                    foreach (Store store in stores)
+                    {
+                        store.Brand = null;
+                        store.ImportOrders = null;
+                        store.Receipts = null;
+                    }
+                    break;
+            }
         }
     }
 }
