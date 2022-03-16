@@ -43,6 +43,10 @@ namespace DataAccessLibrary.BusinessEntity
                     {
                         throw new Exception("Purchase quantity exceeds quantity in stock!!");
                     }
+                    if (receiptDetail.Quantity == productDetail.StoredQuantity)
+                    {
+                        productDetail.Status = Status.INACTIVE;
+                    }
                     receiptDetail.ReceiptId = newReceipt.Id;
                     receiptDetail.Name = product.Name;
                     receiptDetail.Price = productDetail.Price;
