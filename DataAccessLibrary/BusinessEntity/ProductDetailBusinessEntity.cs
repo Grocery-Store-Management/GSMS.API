@@ -98,6 +98,7 @@ namespace DataAccessLibrary.BusinessEntity
             await CheckProductDetail(newProductDetail);
             newProductDetail.Id = GsmsUtils.CreateGuiId();
             newProductDetail.Product = null;
+            await UpdateProductDetailStatus(newProductDetail);
             await work.ProductDetails.AddAsync(newProductDetail);
             await work.Save();
             return newProductDetail;
@@ -115,11 +116,41 @@ namespace DataAccessLibrary.BusinessEntity
             productDetail.Price = updatedProductDetail.Price;
             productDetail.Status = updatedProductDetail.Status;
             productDetail.StoredQuantity = updatedProductDetail.StoredQuantity;
+            await UpdateProductDetailStatus(productDetail);
             //productDetail.Product = null;
             work.ProductDetails.Update(productDetail);
             await work.Save();
             return productDetail;
         }
+
+        private async Task UpdateProductDetailStatus(ProductDetail productDetail)
+        {
+            if (productDetail.StoredQuantity == 0)
+            {
+                productDetail.Status = Status.OUT_OF_STOCK;
+            }
+            else if (productDetail.StoredQuantity < 10)
+            {
+                productDetail.Status = Status.ALMOST_OUT_OF_STOCK;
+            }
+            else
+            {
+                IEnumerable<ReceiptDetail> receiptDetails = await work.ReceiptDetails.GetAllAsync();
+                receiptDetails = from detail in receiptDetails
+                                 where detail.ProductId.Equals(productDetail.ProductId)
+                                      && detail.CreatedDate.Value.Month == DateTime.Now.Month
+                                 select detail;
+                if (receiptDetails.Count() > 50)
+                {
+                    productDetail.Status = Status.BEST_SELLER;
+                }
+                else
+                {
+                    productDetail.Status = Status.AVAILABLE;
+                }
+            }
+        }
+
         private async Task CheckProductDetail(ProductDetail productDetail)
         {
             Product product = await work.Products.GetAsync(productDetail.ProductId);

@@ -98,6 +98,7 @@ namespace DataAccessLibrary.BusinessEntity
                     {
                         throw new Exception("Stored Quantity must be a positive integer!!");
                     }
+                    await UpdateProductDetailStatus(productDetail);
                     productDetail.Id = GsmsUtils.CreateGuiId();
                     productDetail.Product = null;
                 }
@@ -134,14 +135,44 @@ namespace DataAccessLibrary.BusinessEntity
                     {
                         throw new Exception("Stored Quantity must be a positive integer!!");
                     }
+                    await UpdateProductDetailStatus(productDetail);
                     //productDetail.Id = GsmsUtils.CreateGuiId();
-                    productDetail.Product = null;
+                    work.ProductDetails.Update(productDetail);
+                    //productDetail.Product = null;
                 }
-                product.ProductDetails = updatedProduct.ProductDetails;
+                //product.ProductDetails = null;
             }
             work.Products.Update(product);
             await work.Save();
             return product;
+        }
+
+        private async Task UpdateProductDetailStatus(ProductDetail productDetail)
+        {
+            if (productDetail.StoredQuantity == 0)
+            {
+                productDetail.Status = Status.OUT_OF_STOCK;
+            }
+            else if (productDetail.StoredQuantity < 10)
+            {
+                productDetail.Status = Status.ALMOST_OUT_OF_STOCK;
+            }
+            else
+            {
+                IEnumerable<ReceiptDetail> receiptDetails = await work.ReceiptDetails.GetAllAsync();
+                receiptDetails = from detail in receiptDetails
+                                 where detail.ProductId.Equals(productDetail.ProductId)
+                                      && detail.CreatedDate.Value.Month == DateTime.Now.Month
+                                 select detail;
+                if (receiptDetails.Count() > 50)
+                {
+                    productDetail.Status = Status.BEST_SELLER;
+                }
+                else
+                {
+                    productDetail.Status = Status.AVAILABLE;
+                }
+            }
         }
 
         private async Task CheckProduct(Product product)
