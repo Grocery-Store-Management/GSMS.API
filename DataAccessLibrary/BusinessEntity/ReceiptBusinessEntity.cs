@@ -18,6 +18,7 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<Receipt> AddReceiptAsync(Receipt newReceipt)
         {
+            List<ReceiptDetail> receiptDetails = newReceipt.ReceiptDetails.ToList();
             Store store = await work.Stores.GetAsync(newReceipt.StoreId);
             if (store == null)
             {
@@ -53,6 +54,7 @@ namespace DataAccessLibrary.BusinessEntity
             }
             await work.Receipts.AddAsync(newReceipt);
             await work.Save();
+            newReceipt.ReceiptDetails = receiptDetails;
             return newReceipt;
         }
 
@@ -138,7 +140,11 @@ namespace DataAccessLibrary.BusinessEntity
                 {
                     throw new Exception("Purchase quantity exceeds quantity in stock!!");
                 }
+                //receiptDetail.Id = GsmsUtils.CreateGuiId();
+                receiptDetail.Name = product.Name;
+                receiptDetail.Price = productDetail.Price;
             }
+
             receipt.ReceiptDetails = updatedReceipt.ReceiptDetails;
             work.Receipts.Update(receipt);
             await work.Save();
