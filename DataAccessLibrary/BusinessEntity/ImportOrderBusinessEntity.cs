@@ -18,6 +18,7 @@ namespace DataAccessLibrary.BusinessEntity
 
         public async Task<ImportOrder> AddImportOrderAsync(ImportOrder newImportOrder)
         {
+            List<ImportOrderDetail> importOrderDetails = newImportOrder.ImportOrderDetails.ToList();
             Store store = await work.Stores.GetAsync(newImportOrder.StoreId);
             if (store == null)
             {
@@ -49,6 +50,7 @@ namespace DataAccessLibrary.BusinessEntity
             }
             await work.ImportOrders.AddAsync(newImportOrder);
             await work.Save();
+            newImportOrder.ImportOrderDetails = importOrderDetails;
             return newImportOrder;
         }
 
@@ -130,6 +132,7 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 importOrder.IsDeleted = updatedImportOrder.IsDeleted;
             }
+
             importOrder.ImportOrderDetails = updatedImportOrder.ImportOrderDetails;
             work.ImportOrders.Update(importOrder);
             await work.Save();
