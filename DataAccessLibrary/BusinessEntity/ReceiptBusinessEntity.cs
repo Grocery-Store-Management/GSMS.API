@@ -45,7 +45,7 @@ namespace DataAccessLibrary.BusinessEntity
                     }
                     if (receiptDetail.Quantity == productDetail.StoredQuantity)
                     {
-                        productDetail.Status = Status.INACTIVE;
+                        productDetail.Status = Status.OUT_OF_STOCK;
                     }
                     receiptDetail.ReceiptId = newReceipt.Id;
                     receiptDetail.Name = product.Name;
