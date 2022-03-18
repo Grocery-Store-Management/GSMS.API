@@ -147,6 +147,8 @@ namespace DataAccessLibrary.BusinessEntity
                 //receiptDetail.Id = GsmsUtils.CreateGuiId();
                 receiptDetail.Name = product.Name;
                 receiptDetail.Price = productDetail.Price;
+
+                work.ReceiptDetails.Update(receiptDetail);
             }
 
             receipt.ReceiptDetails = updatedReceipt.ReceiptDetails;
