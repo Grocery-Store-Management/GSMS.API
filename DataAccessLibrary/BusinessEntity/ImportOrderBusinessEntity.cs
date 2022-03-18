@@ -39,6 +39,11 @@ namespace DataAccessLibrary.BusinessEntity
                     {
                         throw new Exception("Product is not existed!!");
                     }
+                    //When quantity is negative --> export order
+                    if (importOrderDetail.Quantity < 0 && importOrderDetail.Quantity * -1 > productDetail.StoredQuantity)
+                    {
+                        throw new Exception("Export quantity exceeds quantity in stock!!");
+                    }
                     importOrderDetail.ImportOrderId = newImportOrder.Id;
                     importOrderDetail.Name = product.Name;
                     //importOrderDetail.Price = productDetail.Price;
@@ -131,6 +136,26 @@ namespace DataAccessLibrary.BusinessEntity
             if (updatedImportOrder.IsDeleted != null)
             {
                 importOrder.IsDeleted = updatedImportOrder.IsDeleted;
+            }
+
+            foreach(ImportOrderDetail importOrderDetail in updatedImportOrder.ImportOrderDetails)
+            {
+                Product product = await work.Products.GetAsync(importOrderDetail.ProductId);
+                IEnumerable<ProductDetail> productDetails = await work.ProductDetails.GetAllAsync();
+                ProductDetail productDetail = productDetails.Where(p => p.ProductId == product.Id).FirstOrDefault();
+                if (product == null || product.IsDeleted == true)
+                {
+                    throw new Exception("Product is not existed!!");
+                }
+                //When quantity is negative --> export order
+                if (importOrderDetail.Quantity < 0 && importOrderDetail.Quantity * -1 > productDetail.StoredQuantity)
+                {
+                    throw new Exception("Export quantity exceeds quantity in stock!!");
+                }
+                importOrderDetail.Name = product.Name;
+                importOrderDetail.Price = productDetail.Price;
+
+                work.ImportOrderDetails.Update(importOrderDetail);
             }
 
             importOrder.ImportOrderDetails = updatedImportOrder.ImportOrderDetails;
