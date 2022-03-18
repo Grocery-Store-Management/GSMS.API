@@ -55,7 +55,7 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 throw new Exception("Import order is not existed!!");
             }
-            string sql = "select * from ImportOrderDetail where OrderId = '" + importOrderId + "'";
+            string sql = "select * from ImportOrderDetail where ImportOrderId = '" + importOrderId + "'";
             importOrderDetails = await work.ImportOrderDetails.ExecuteQueryAsync(sql);
             return importOrderDetails;
         }
