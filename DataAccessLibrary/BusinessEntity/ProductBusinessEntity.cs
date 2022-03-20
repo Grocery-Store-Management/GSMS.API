@@ -66,6 +66,10 @@ namespace DataAccessLibrary.BusinessEntity
                 }
                 product.ImportOrderDetails = null;
                 product.ReceiptDetails = null;
+
+                product.ProductDetails = (from productDetail in await work.ProductDetails.GetAllAsync()
+                                          where productDetail.ProductId.Equals(product.Id)
+                                          select productDetail).ToList();
             }
 
             return products;
@@ -74,10 +78,15 @@ namespace DataAccessLibrary.BusinessEntity
         public async Task<Product> GetProductAsync(string id)
         {
             Product product = await work.Products.GetAsync(id);
-            if (product != null && product.IsDeleted == true)
+            if (product == null || (product != null && product.IsDeleted == true))
             {
                 return null;
             }
+            IEnumerable<ProductDetail> productDetails = await work.ProductDetails.GetAllAsync();
+            productDetails = from productDetail in productDetails
+                             where productDetail.ProductId.Equals(id)
+                             select productDetail;
+            product.ProductDetails = productDetails.ToList();
             return product;
         }
 
@@ -103,8 +112,12 @@ namespace DataAccessLibrary.BusinessEntity
                     productDetail.Product = null;
                 }
             }
+            IEnumerable<ProductDetail> productDetails = newProduct.ProductDetails;
+
             await work.Products.AddAsync(newProduct);
             await work.Save();
+
+            newProduct.ProductDetails = productDetails.ToList();
             return newProduct;
         }
 
@@ -144,6 +157,10 @@ namespace DataAccessLibrary.BusinessEntity
             }
             work.Products.Update(product);
             await work.Save();
+            product.ProductDetails = (from productDetail in await work.ProductDetails.GetAllAsync()
+                                      where productDetail.ProductId.Equals(product.Id)
+                                      select productDetail).ToList();
+            product.ReceiptDetails = null;
             return product;
         }
 
