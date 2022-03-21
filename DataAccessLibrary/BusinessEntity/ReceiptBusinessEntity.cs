@@ -99,6 +99,8 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 return null;
             }
+            IEnumerable<ReceiptDetail> receiptDetails = await work.ReceiptDetails.GetAllAsync();
+            receipt.ReceiptDetails = receiptDetails.Where(r => r.ReceiptId.Equals(receipt.Id)).ToList();
             return receipt;
         }
 
