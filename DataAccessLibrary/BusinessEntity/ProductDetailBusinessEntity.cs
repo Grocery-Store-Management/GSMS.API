@@ -166,6 +166,14 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 throw new Exception("Stored Quantity must be a positive integer!!");
             }
+            if (productDetail.ExpiringDate != null && productDetail.ExpiringDate.Value.CompareTo(DateTime.Now) <= 0)
+            {
+                throw new Exception("Expiring Date must be further than today!!");
+            }
+            if (productDetail.ManufacturingDate != null && productDetail.ManufacturingDate.Value.CompareTo(DateTime.Now) >= 0)
+            {
+                throw new Exception("Manufaturing Date must be ealier than today!!");
+            }
         }
 
         public async Task DeleteProductDetailAsync(string id)
