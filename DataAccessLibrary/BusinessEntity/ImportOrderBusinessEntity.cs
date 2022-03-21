@@ -105,6 +105,8 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 return null;
             }
+            IEnumerable<ImportOrderDetail> importOrderDetails = await work.ImportOrderDetails.GetAllAsync();
+            importOrder.ImportOrderDetails = importOrderDetails.Where(i => i.ImportOrderId.Equals(importOrder.Id)).ToList();
             return importOrder;
         }
 
