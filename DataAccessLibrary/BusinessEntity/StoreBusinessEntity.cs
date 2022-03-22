@@ -93,6 +93,7 @@ namespace DataAccessLibrary.BusinessEntity
             store.Status = updatedStore.Status;
             work.Stores.Update(store);
             await work.Save();
+
             return store;
         }
 
