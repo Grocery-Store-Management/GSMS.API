@@ -46,6 +46,11 @@ namespace DataAccessLibrary.BusinessEntity
                     if (receiptDetail.Quantity == productDetail.StoredQuantity)
                     {
                         productDetail.Status = Status.OUT_OF_STOCK;
+                    } 
+                    else if(productDetail.StoredQuantity - receiptDetail.Quantity > 0 && productDetail.StoredQuantity - receiptDetail.Quantity < 10)
+                    {
+                        productDetail.Status = Status.ALMOST_OUT_OF_STOCK;
+
                     }
                     receiptDetail.ReceiptId = newReceipt.Id;
                     receiptDetail.Name = product.Name;
@@ -99,6 +104,8 @@ namespace DataAccessLibrary.BusinessEntity
             {
                 return null;
             }
+            IEnumerable<ReceiptDetail> receiptDetails = await work.ReceiptDetails.GetAllAsync();
+            receipt.ReceiptDetails = receiptDetails.Where(r => r.ReceiptId.Equals(receipt.Id)).ToList();
             return receipt;
         }
 
@@ -147,6 +154,8 @@ namespace DataAccessLibrary.BusinessEntity
                 //receiptDetail.Id = GsmsUtils.CreateGuiId();
                 receiptDetail.Name = product.Name;
                 receiptDetail.Price = productDetail.Price;
+
+                work.ReceiptDetails.Update(receiptDetail);
             }
 
             receipt.ReceiptDetails = updatedReceipt.ReceiptDetails;

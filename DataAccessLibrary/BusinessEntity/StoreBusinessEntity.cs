@@ -90,6 +90,7 @@ namespace DataAccessLibrary.BusinessEntity
             store.Name = updatedStore.Name;
             store.IsDeleted = updatedStore.IsDeleted;
             store.BrandId = updatedStore.BrandId;
+            store.Status = updatedStore.Status;
             work.Stores.Update(store);
             await work.Save();
             return store;
