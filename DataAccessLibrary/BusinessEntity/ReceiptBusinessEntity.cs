@@ -50,6 +50,7 @@ namespace DataAccessLibrary.BusinessEntity
                     else if(productDetail.StoredQuantity - receiptDetail.Quantity > 0 && productDetail.StoredQuantity - receiptDetail.Quantity < 10)
                     {
                         productDetail.Status = Status.ALMOST_OUT_OF_STOCK;
+
                     }
                     receiptDetail.ReceiptId = newReceipt.Id;
                     receiptDetail.Name = product.Name;
