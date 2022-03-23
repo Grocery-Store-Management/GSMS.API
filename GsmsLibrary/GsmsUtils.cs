@@ -90,13 +90,6 @@ namespace GsmsLibrary
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             });
         }
-
-        public static DateTime ConvertToUTC7(DateTime utc)
-        {
-            utc = DateTime.SpecifyKind(utc, DateTimeKind.Unspecified);
-            TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
-            return TimeZoneInfo.ConvertTimeFromUtc(utc, cstZone);
-        }
         
     }
 }

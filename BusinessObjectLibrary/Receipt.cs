@@ -1,5 +1,4 @@
-﻿using GsmsLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -17,17 +16,7 @@ namespace BusinessObjectLibrary
         public string CustomerId { get; set; }
         public string EmployeeId { get; set; }
         public string StoreId { get; set; }
-
-        private DateTime? createdDate;
-        public DateTime? CreatedDate { get
-            {
-                return GsmsUtils.ConvertToUTC7(createdDate.Value);
-            }
-            set
-            {
-                createdDate = value;
-            }
-        }
+        public DateTime? CreatedDate { get; set; }
         public bool? IsDeleted { get; set; }
 
         public virtual Store Store { get; set; }

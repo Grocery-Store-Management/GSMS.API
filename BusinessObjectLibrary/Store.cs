@@ -17,18 +17,7 @@ namespace BusinessObjectLibrary
         public string Name { get; set; }
         public string BrandId { get; set; }
         public int? Status { get; set; }
-        private DateTime? createdDate;
-        public DateTime? CreatedDate
-        {
-            get
-            {
-                return GsmsLibrary.GsmsUtils.ConvertToUTC7(createdDate.Value);
-            }
-            set
-            {
-                createdDate = value;
-            }
-        }
+        public DateTime? CreatedDate { get; set; }
         public bool? IsDeleted { get; set; }
 
         public virtual Brand Brand { get; set; }
