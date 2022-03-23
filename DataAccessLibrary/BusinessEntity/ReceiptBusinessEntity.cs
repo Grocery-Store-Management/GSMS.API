@@ -160,6 +160,9 @@ namespace DataAccessLibrary.BusinessEntity
             receipt.ReceiptDetails = updatedReceipt.ReceiptDetails;
             work.Receipts.Update(receipt);
             await work.Save();
+            IEnumerable<ReceiptDetail> receiptDetails = await work.ReceiptDetails.GetAllAsync();
+            receiptDetails = receiptDetails.Where(r => r.ReceiptId.Equals(receipt.Id));
+            receipt.ReceiptDetails = receiptDetails.ToList();
             return receipt;
         }
 
