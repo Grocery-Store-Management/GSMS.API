@@ -195,9 +195,19 @@ namespace DataAccessLibrary.BusinessEntity
                 IEnumerable<ReceiptDetail> receiptDetails = await work.ReceiptDetails.GetAllAsync();
                 receiptDetails = from detail in receiptDetails
                                  where detail.ProductId.Equals(productDetail.ProductId)
-                                      && detail.CreatedDate.Value.Month == DateTime.Now.Month
                                  select detail;
-                if (receiptDetails.Count() > 50)
+
+                IEnumerable<ReceiptDetail> receiptCount = new List<ReceiptDetail>();
+                foreach (ReceiptDetail receiptDetail in receiptDetails)
+                {
+                    Receipt receipt = await work.Receipts.GetAsync(receiptDetail.ReceiptId);
+                    if (receipt != null && receipt.CreatedDate.HasValue && receipt.CreatedDate.Value.Month == DateTime.Now.Month)
+                    {
+                        receiptCount.Append(receiptDetail);
+                    }
+                }
+
+                if (receiptCount.Count() > 50)
                 {
                     productDetail.Status = Status.BEST_SELLER;
                 }
