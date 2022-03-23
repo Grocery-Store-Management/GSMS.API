@@ -119,6 +119,7 @@ namespace DataAccessLibrary.BusinessEntity
             }
 
             ImportOrder importOrder = await work.ImportOrders.GetAsync(updatedImportOrder.Id);
+
             if(importOrder == null || importOrder.IsDeleted == true)
             {
                 throw new Exception("Import order is not existed!!");
@@ -163,6 +164,9 @@ namespace DataAccessLibrary.BusinessEntity
             importOrder.ImportOrderDetails = updatedImportOrder.ImportOrderDetails;
             work.ImportOrders.Update(importOrder);
             await work.Save();
+            IEnumerable<ImportOrderDetail> importOrderDetails = await work.ImportOrderDetails.GetAllAsync();
+            importOrderDetails = importOrderDetails.Where(i => i.ImportOrderId.Equals(importOrder.Id));
+            importOrder.ImportOrderDetails = importOrderDetails.ToList();
             return importOrder;
         }
 
