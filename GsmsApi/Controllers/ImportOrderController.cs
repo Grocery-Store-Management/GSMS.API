@@ -3,7 +3,9 @@ using DataAccessLibrary.BusinessEntity;
 using DataAccessLibrary.Interfaces;
 using GsmsLibrary;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using PushNotification.Service;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,9 +22,9 @@ namespace GsmsApi.Controllers
     {
         private ImportOrderBusinessEntity importOrderEntity;
 
-        public ImportOrderController(IUnitOfWork work)
+        public ImportOrderController(IUnitOfWork work, INotificationService notificationService, IHostingEnvironment env)
         {
-            importOrderEntity = new ImportOrderBusinessEntity(work);
+            importOrderEntity = new ImportOrderBusinessEntity(work, notificationService, env);
         }
 
         // GET: api/<ImportOrderController>
