@@ -1,6 +1,9 @@
 ﻿using BusinessObjectLibrary;
 using DataAccessLibrary.Interfaces;
 using GsmsLibrary;
+using Microsoft.AspNetCore.Hosting;
+using PushNotification.Models;
+using PushNotification.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +13,15 @@ namespace DataAccessLibrary.BusinessEntity
 {
     public class ImportOrderBusinessEntity
     {
+        private readonly INotificationService _notificationService;
+        private IHostingEnvironment _env;
+
         private IUnitOfWork work; 
-        public ImportOrderBusinessEntity(IUnitOfWork work)
+        public ImportOrderBusinessEntity(IUnitOfWork work, INotificationService notificationService, IHostingEnvironment env)
         {
             this.work = work;
+            _notificationService = notificationService;
+            _env = env;
         }
 
         public async Task<ImportOrder> AddImportOrderAsync(ImportOrder newImportOrder)
@@ -56,6 +64,15 @@ namespace DataAccessLibrary.BusinessEntity
             await work.ImportOrders.AddAsync(newImportOrder);
             await work.Save();
             newImportOrder.ImportOrderDetails = importOrderDetails;
+            //push notification
+            string token = "egCPARdyQKq5HNe2CK-H3E:APA91bEdZOma_rwlXdaq2bajwU7pX4okuhLkCvz9VjK2PUPkpUU8aoPTsN6-4q9tetjMkBhUafIPFzfPJszqqOm1Srz57IdhduSF2VrivrmbfTlazwb__YoP8bpQ22dKSzEMaJ9syPiT";
+            NotificationModel notificationModel = new NotificationModel
+            {
+                Title = "Đơn nhập hàng được tạo thành công!",
+                Body = newImportOrder.Name + " đã được tạo thành công",
+                Token = token
+            };
+            await _notificationService.SendNotification(notificationModel, _env);
             return newImportOrder;
         }
 
