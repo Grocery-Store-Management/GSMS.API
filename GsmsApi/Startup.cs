@@ -81,18 +81,18 @@ namespace GsmsApi
 
             // Authentication with Firebase
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            .AddJwtBearer(options =>
+            {
+                options.Authority = GsmsConfiguration.ValidIssuer;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.Authority = GsmsConfiguration.ValidIssuer;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = GsmsConfiguration.ValidIssuer,
-                        ValidateAudience = true,
-                        ValidAudience = GsmsConfiguration.ValidAudience,
-                        ValidateLifetime = true
-                    };
-                });
+                    ValidateIssuer = true,
+                    ValidIssuer = GsmsConfiguration.ValidIssuer,
+                    ValidateAudience = true,
+                    ValidAudience = GsmsConfiguration.ValidAudience,
+                    ValidateLifetime = true
+                };
+            });
 
             // API Calling Settings
             services.AddCors(c =>
@@ -103,11 +103,11 @@ namespace GsmsApi
             });
 
             //Redis
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = GsmsConfiguration.RedisConnectionString;
-                options.InstanceName = GsmsConfiguration.RedisInstanceName;
-            });
+            //services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = GsmsConfiguration.RedisConnectionString;
+            //    options.InstanceName = GsmsConfiguration.RedisInstanceName;
+            //});
 
             //Push notification 
             services.AddTransient<INotificationService, NotificationService>();

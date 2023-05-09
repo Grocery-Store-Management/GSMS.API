@@ -76,15 +76,15 @@ namespace DataAccessLibrary.Implementations
             context.SaveChanges();
 
             //Save Changes to Repo
-            await Brands.SaveChangesToRedis();
-            await Categories.SaveChangesToRedis();
-            await ImportOrders.SaveChangesToRedis();
-            await ImportOrderDetails.SaveChangesToRedis();
-            await Products.SaveChangesToRedis();
-            await ProductDetails.SaveChangesToRedis();
-            await Receipts.SaveChangesToRedis();
-            await ReceiptDetails.SaveChangesToRedis();
-            await Stores.SaveChangesToRedis();
+            //await Brands.SaveChangesToRedis();
+            //await Categories.SaveChangesToRedis();
+            //await ImportOrders.SaveChangesToRedis();
+            //await ImportOrderDetails.SaveChangesToRedis();
+            //await Products.SaveChangesToRedis();
+            //await ProductDetails.SaveChangesToRedis();
+            //await Receipts.SaveChangesToRedis();
+            //await ReceiptDetails.SaveChangesToRedis();
+            //await Stores.SaveChangesToRedis();
 
             return 1;
         }

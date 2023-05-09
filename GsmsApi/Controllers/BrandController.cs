@@ -17,7 +17,7 @@ namespace GsmsApi.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v1.0/brands")]
-    [Authorize]
+    //[Authorize]
     public class BrandController : ControllerBase
     {
         private BrandBusinessEntity brandEntity;

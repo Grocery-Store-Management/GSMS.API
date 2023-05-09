@@ -15,15 +15,15 @@ namespace DataAccessLibrary.Implementations
     {
         protected readonly GsmsContext context;
         protected readonly DbSet<T> dbSet;
-        protected readonly IDistributedCache cache;
+        //protected readonly IDistributedCache cache;
 
         public GenericRepository(GsmsContext context
-            , IDistributedCache cache
+            //, IDistributedCache cache
             )
         {
             this.context = context;
             this.dbSet = context.Set<T>();
-            this.cache = cache;
+            //this.cache = cache;
             //dbSet = cache.Get<DbSet<T>>(typeof(T).ToString());
             //if (dbSet == null)
             //{
@@ -65,15 +65,16 @@ namespace DataAccessLibrary.Implementations
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            List<T> cachedDatas = await cache.GetAsync<List<T>>(typeof(T).ToString());
-            if (cachedDatas == null)
-            {
-                ReduceDbSet();
-                cachedDatas = await dbSet.ToListAsync();
-                await cache.SetAsync(typeof(T).ToString(), cachedDatas);
-            }
-            //List<T> cachedDatas = await dbSet.ToListAsync();
-            return cachedDatas;
+            //List<T> cachedDatas = await cache.GetAsync<List<T>>(typeof(T).ToString());
+            //if (cachedDatas == null)
+            //{
+            //    ReduceDbSet();
+            //    cachedDatas = await dbSet.ToListAsync();
+            //    await cache.SetAsync(typeof(T).ToString(), cachedDatas);
+            //}
+            ////List<T> cachedDatas = await dbSet.ToListAsync();
+            //return cachedDatas;
+            return await dbSet.ToListAsync();
         }
 
         public void Update(T entity)
@@ -81,12 +82,12 @@ namespace DataAccessLibrary.Implementations
             dbSet.Update(entity);
         }
 
-        public async Task SaveChangesToRedis()
-        {
-            ReduceDbSet();
-            List<T> list = dbSet.ToList();
-            await cache.SetAsync(typeof(T).ToString(), list);
-        }
+        //public async Task SaveChangesToRedis()
+        //{
+        //    ReduceDbSet();
+        //    List<T> list = dbSet.ToList();
+        //    await cache.SetAsync(typeof(T).ToString(), list);
+        //}
 
         private void ReduceDbSet()
         {

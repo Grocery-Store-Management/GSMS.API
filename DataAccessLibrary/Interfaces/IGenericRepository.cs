@@ -53,6 +53,6 @@ namespace DataAccessLibrary.Interfaces
         /// <returns>List of entities that satisfies the command</returns>
         Task<IEnumerable<T>> ExecuteQueryAsync(string sqlQuery);
 
-        Task SaveChangesToRedis();
+        //Task SaveChangesToRedis();
     }
 }
